@@ -1,0 +1,359 @@
+definitions:
+  schemas.ChangePassword:
+    properties:
+      new_password:
+        example: Password1!
+        type: string
+      old_password:
+        example: Password1!
+        type: string
+      user_id:
+        example: 1
+        type: integer
+    required:
+    - new_password
+    - old_password
+    - user_id
+    type: object
+  schemas.ForgotPassword:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
+  schemas.LoginRequest:
+    properties:
+      email:
+        example: nandarusfikri@gmail.com
+        type: string
+      password:
+        example: Password1!
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  schemas.ProductsRequest:
+    properties:
+      limit:
+        example: 10
+        type: integer
+      order_field:
+        example: id|desc
+        type: string
+      page:
+        example: 1
+        type: integer
+      search_text:
+        example: Search name ku
+        type: string
+    type: object
+  schemas.ResetPassword:
+    properties:
+      email:
+        type: string
+      new_password:
+        type: string
+      token:
+        type: string
+    required:
+    - email
+    - new_password
+    - token
+    type: object
+  schemas.UserInsert:
+    properties:
+      email:
+        example: nandarusfikri@gmail.com
+        type: string
+      manager_id:
+        example: 1
+        type: integer
+      name:
+        example: Nanda Rusfikri
+        type: string
+      password:
+        example: Password1!
+        type: string
+      role_id:
+        example: 1
+        type: integer
+      team_id:
+        example: 1
+        type: integer
+    required:
+    - email
+    - name
+    - password
+    - role_id
+    - team_id
+    type: object
+  schemas.UserUpdate:
+    properties:
+      email:
+        example: nandarusfikri@gmail.com
+        type: string
+      id:
+        example: 1
+        type: integer
+      is_active:
+        example: true
+        type: boolean
+      manager_id:
+        example: 1
+        type: integer
+      name:
+        example: Nanda Rusfikri
+        type: string
+      phone:
+        example: "08123456789"
+        type: string
+      role_id:
+        example: 1
+        type: integer
+      team_id:
+        example: 1
+        type: integer
+    required:
+    - id
+    type: object
+  schemas.UsersRequest:
+    properties:
+      is_active:
+        description: |-
+          Email      string `json:"email"`
+          Phone      string `json:"phone"`
+        type: boolean
+      limit:
+        example: 10
+        type: integer
+      order_field:
+        example: id|desc
+        type: string
+      page:
+        example: 1
+        type: integer
+      search_text:
+        type: string
+    type: object
+  schemas.UsersResponse:
+    properties:
+      avatar_path:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      name:
+        type: string
+    type: object
+info:
+  contact:
+    email: nandarusfikri@gmail.com
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: go-template-project
+  version: "1.0"
+paths:
+  /v1/auth/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: Forgot Password
+      operationId: User-ForgotPassword
+      parameters:
+      - description: body data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.ForgotPassword'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Forgot Password
+      tags:
+      - Auth
+  /v1/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      operationId: User-LoginController
+      parameters:
+      - description: body data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Login
+      tags:
+      - Auth
+  /v1/auth/reset-password:
+    post:
+      consumes:
+      - application/json
+      description: Reset Password
+      operationId: User-ResetPassword
+      parameters:
+      - description: body data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.ResetPassword'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Reset Password
+      tags:
+      - Auth
+  /v1/products:
+    post:
+      consumes:
+      - application/json
+      description: Product List
+      operationId: Item-ProductList
+      parameters:
+      - description: body data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.ProductsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Product List
+      tags:
+      - Product
+  /v1/user:
+    post:
+      consumes:
+      - application/json
+      description: User Insert
+      operationId: User-UserInsert
+      parameters:
+      - description: body data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.UserInsert'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: User Insert
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: User Update
+      operationId: User-UserUpdate
+      parameters:
+      - description: body data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.UserUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: User Update
+      tags:
+      - User
+  /v1/user/change-password:
+    post:
+      consumes:
+      - application/json
+      description: Change Password
+      operationId: User-ChangePassword
+      parameters:
+      - description: body data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.ChangePassword'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Change Password
+      tags:
+      - User
+  /v1/users:
+    post:
+      consumes:
+      - application/json
+      description: User List
+      operationId: User-UserList
+      parameters:
+      - description: body data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.UsersRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/schemas.UsersResponse'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: User List
+      tags:
+      - User
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+    x-extension-openapi: '{"example": "value on a json format"}'
+swagger: "2.0"
