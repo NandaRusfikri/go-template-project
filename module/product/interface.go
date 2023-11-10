@@ -10,6 +10,6 @@ type ProductRepository interface {
 	GetIds(ids []uint64) ([]uint64, schemas.ResponseError)
 }
 
-type ItemUseCase interface {
+type ProductUseCase interface {
 	ProductList(input schemas.ProductsRequest) ([]*entity.MSProduct, int64, schemas.ResponseError)
 }

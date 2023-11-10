@@ -3,7 +3,7 @@ package database
 import (
 	log "github.com/sirupsen/logrus"
 	auth_entity "go-template-project/module/auth/entity"
-	item_entity "go-template-project/module/product/entity"
+	product_entity "go-template-project/module/product/entity"
 	user_entity "go-template-project/module/user/entity"
 	"go-template-project/pkg"
 	"gorm.io/gorm"
@@ -13,7 +13,7 @@ func MigrateDBSQL(db *gorm.DB) error {
 	err := db.AutoMigrate(
 		&user_entity.EntityUser{},
 		&auth_entity.EntityForgotPassword{},
-		&item_entity.MSProduct{},
+		&product_entity.MSProduct{},
 	)
 
 	if err != nil {
@@ -37,24 +37,24 @@ func MigrateDBSQL(db *gorm.DB) error {
 		db.Create(&UserAri)
 	}
 
-	if data := db.Find(&item_entity.MSProduct{}); data.RowsAffected < 1 {
-		db.Create(&item_entity.MSProduct{
+	if data := db.Find(&product_entity.MSProduct{}); data.RowsAffected < 1 {
+		db.Create(&product_entity.MSProduct{
 			Name:     "Mouse",
 			Quantity: 1000,
 			Price:    10000})
-		db.Create(&item_entity.MSProduct{
+		db.Create(&product_entity.MSProduct{
 			Name:     "Keyboard",
 			Quantity: 1000,
 			Price:    10000})
-		db.Create(&item_entity.MSProduct{
+		db.Create(&product_entity.MSProduct{
 			Name:     "Laptop",
 			Quantity: 1000,
 			Price:    10000})
-		db.Create(&item_entity.MSProduct{
+		db.Create(&product_entity.MSProduct{
 			Name:     "Printer",
 			Quantity: 1000,
 			Price:    10000})
-		db.Create(&item_entity.MSProduct{
+		db.Create(&product_entity.MSProduct{
 			Name:     "Monitor",
 			Quantity: 1000,
 			Price:    10000})
