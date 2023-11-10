@@ -2,15 +2,13 @@ package repository
 
 import (
 	"errors"
-	"fmt"
-	"github.com/dgrijalva/jwt-go"
 	log "github.com/sirupsen/logrus"
-	entity_auth "go-template-project/module/auth/entity"
-	entity_user "go-template-project/module/user/entity"
+	auth_entity "go-template-project/module/auth/entity"
+	user_entity "go-template-project/module/user/entity"
 	"go-template-project/pkg"
 	"go-template-project/schemas"
 	"gorm.io/gorm"
-	"os"
+
 	"time"
 )
 
@@ -22,63 +20,9 @@ func InitAuthRepository(db *gorm.DB) *AuthRepository {
 	return &AuthRepository{db: db}
 }
 
-func (r *AuthRepository) Login(input schemas.LoginRequest) (*schemas.LoginResponse, schemas.ResponseError) {
+func (r *AuthRepository) RequestForgotPassword(user_id uint64, token string) (*auth_entity.EntityForgotPassword, schemas.ResponseError) {
 
-	var user entity_user.EntityUser
-
-	db := r.db.Where("email = ?", input.Email)
-
-	err := db.First(&user).Error
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			log.Errorln("❌ Email not found ==> ", err.Error())
-			return nil, schemas.ResponseError{Error: err, Code: 401}
-		}
-		log.Errorln("❌ Error when query to database ==> ", err.Error())
-		return nil, schemas.ResponseError{Error: err, Code: 500}
-	}
-
-	CheckPassword := pkg.ComparePassword(user.Password, input.Password)
-	if CheckPassword != nil {
-		return nil, schemas.ResponseError{Error: errors.New("password invalid"), Code: 401}
-	}
-
-	if user.IsActive != nil && !*user.IsActive {
-		return nil, schemas.ResponseError{Error: fmt.Errorf("user not active"), Code: 401}
-	}
-
-	expiredAt := time.Now().Add(time.Hour * time.Duration(1440))
-	claims := schemas.Claims{
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expiredAt.Unix(),
-		},
-		Id:    user.ID,
-		Name:  user.Name,
-		Email: user.Email,
-	}
-
-	jwtSecretKey := os.Getenv("JWT_SECRET")
-
-	token, ErrorJWT := pkg.Sign(claims, jwtSecretKey)
-	if ErrorJWT != nil {
-		return nil, schemas.ResponseError{Code: 500}
-	}
-
-	resp := schemas.LoginResponse{
-		Id:          user.ID,
-		Name:        user.Name,
-		Email:       user.Email,
-		AvatarPath:  user.AvatarPath,
-		AccessToken: token,
-		ExpiredAt:   expiredAt,
-	}
-
-	return &resp, schemas.ResponseError{}
-}
-
-func (r *AuthRepository) RequestForgotPassword(user_id uint64, token string) (*entity_auth.EntityForgotPassword, schemas.ResponseError) {
-
-	var entity entity_auth.EntityForgotPassword
+	var entity auth_entity.EntityForgotPassword
 	entity.DeletedAt = &gorm.DeletedAt{Valid: true, Time: time.Now()}
 	Delete := r.db.Where("user_id = ?", user_id).Updates(&entity)
 	if Delete.Error != nil {
@@ -86,7 +30,7 @@ func (r *AuthRepository) RequestForgotPassword(user_id uint64, token string) (*e
 		return nil, schemas.ResponseError{Error: Delete.Error, Code: 500}
 	}
 
-	Create := entity_auth.EntityForgotPassword{
+	Create := auth_entity.EntityForgotPassword{
 		UserId: user_id,
 		Token:  token,
 	}
@@ -102,7 +46,7 @@ func (r *AuthRepository) RequestForgotPassword(user_id uint64, token string) (*e
 
 func (r *AuthRepository) ResetPassword(input schemas.ResetPassword) schemas.ResponseError {
 
-	var entity entity_auth.EntityForgotPassword
+	var entity auth_entity.EntityForgotPassword
 	Find := r.db.Where("token = ?", input.Token).First(&entity)
 	if Find.Error != nil {
 		if errors.Is(Find.Error, gorm.ErrRecordNotFound) {
@@ -113,7 +57,7 @@ func (r *AuthRepository) ResetPassword(input schemas.ResetPassword) schemas.Resp
 		return schemas.ResponseError{Error: Find.Error, Code: 500}
 	}
 
-	var user entity_user.EntityUser
+	var user user_entity.EntityUser
 	FindUser := r.db.Where("id = ?", entity.UserId).Where("email = ?", input.Email).First(&user)
 	if FindUser.Error != nil {
 		if errors.Is(FindUser.Error, gorm.ErrRecordNotFound) {

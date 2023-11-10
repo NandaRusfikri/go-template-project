@@ -1,29 +1,68 @@
 package usecase
 
 import (
+	"errors"
 	"fmt"
+	"github.com/dgrijalva/jwt-go"
 	"go-template-project/module/auth"
-	user_repo "go-template-project/module/user/repository"
+	"go-template-project/module/user"
 	"go-template-project/pkg"
 	"go-template-project/schemas"
 	"go-template-project/util"
+	"os"
+	"time"
 )
 
 type AuthUseCase struct {
 	auth_repo auth.AuthRepository
-	user_repo user_repo.UserRepository
+	user_repo user.UserRepository
 	SMTP      *pkg.SMTP
 }
 
-func InitAuthUseCase(auth_repo auth.AuthRepository, smtp *pkg.SMTP) *AuthUseCase {
-	return &AuthUseCase{auth_repo: auth_repo, SMTP: smtp}
+func InitAuthUseCase(auth_repo auth.AuthRepository, user_repo user.UserRepository, smtp *pkg.SMTP) *AuthUseCase {
+	return &AuthUseCase{auth_repo: auth_repo, user_repo: user_repo, SMTP: smtp}
 }
 
 func (u *AuthUseCase) Login(input schemas.LoginRequest) (*schemas.LoginResponse, schemas.ResponseError) {
 
-	res, err := u.auth_repo.Login(input)
+	user, err := u.user_repo.CheckEmail(input.Email)
 
-	return res, err
+	CheckPassword := pkg.ComparePassword(user.Password, input.Password)
+	if CheckPassword != nil {
+		return nil, schemas.ResponseError{Error: errors.New("password invalid"), Code: 401}
+	}
+
+	if user.IsActive != nil && !*user.IsActive {
+		return nil, schemas.ResponseError{Error: fmt.Errorf("user not active"), Code: 401}
+	}
+
+	expiredAt := time.Now().Add(time.Hour * time.Duration(1440))
+	claims := schemas.Claims{
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expiredAt.Unix(),
+		},
+		Id:    user.ID,
+		Name:  user.Name,
+		Email: user.Email,
+	}
+
+	jwtSecretKey := os.Getenv("JWT_SECRET")
+
+	token, ErrorJWT := pkg.Sign(claims, jwtSecretKey)
+	if ErrorJWT != nil {
+		return nil, schemas.ResponseError{Code: 500}
+	}
+
+	res := schemas.LoginResponse{
+		Id:          user.ID,
+		Name:        user.Name,
+		Email:       user.Email,
+		AvatarPath:  user.AvatarPath,
+		AccessToken: token,
+		ExpiredAt:   expiredAt,
+	}
+
+	return &res, err
 }
 
 func (u *AuthUseCase) RequestForgotPassword(input schemas.ForgotPassword) schemas.ResponseError {

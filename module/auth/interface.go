@@ -8,7 +8,6 @@ import (
 type AuthRepository interface {
 	RequestForgotPassword(user_id uint64, token string) (*auth_entity.EntityForgotPassword, schemas.ResponseError)
 	ResetPassword(input schemas.ResetPassword) schemas.ResponseError
-	Login(input schemas.LoginRequest) (*schemas.LoginResponse, schemas.ResponseError)
 }
 
 type AuthUseCase interface {

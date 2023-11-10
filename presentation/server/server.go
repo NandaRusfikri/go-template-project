@@ -78,7 +78,7 @@ func Start() {
 	UserRepo := user_repo.InitUserRepository(DBPostgres)
 	ProductRepo := product_repo.InitProductRepository(DBPostgres)
 	ItemUseCase := item_usecase.InitProductUseCase(ProductRepo)
-	AuthUseCase := auth_usecase.InitAuthUseCase(AuthRepo, smtpClient)
+	AuthUseCase := auth_usecase.InitAuthUseCase(AuthRepo, UserRepo, smtpClient)
 	UserUseCase := user_usecase.InitUserUseCase(UserRepo)
 
 	auth_controller.InitAuthControllerHTTP(httpGin, AuthUseCase)

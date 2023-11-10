@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"go-template-project/constant"
-	"go-template-project/module/user"
 	user_entity "go-template-project/module/user/entity"
 	"go-template-project/schemas"
 	"go-template-project/util"
@@ -16,7 +15,7 @@ type UserRepository struct {
 	db *gorm.DB
 }
 
-func InitUserRepository(db *gorm.DB) user.UserRepository {
+func InitUserRepository(db *gorm.DB) *UserRepository {
 	return &UserRepository{db: db}
 }
 
@@ -128,7 +127,7 @@ func (r *UserRepository) CreateUser(input user_entity.EntityUser) schemas.Respon
 func (r *UserRepository) CheckEmail(email string) (*user_entity.EntityUser, schemas.ResponseError) {
 
 	var user user_entity.EntityUser
-	CheckEmail := r.db.Where("email = ?", email).First(&user)
+	CheckEmail := r.db.Debug().Where("email = ?", email).First(&user)
 	if CheckEmail.Error != nil {
 		return nil, schemas.ResponseError{Error: CheckEmail.Error, Code: 404}
 	}
