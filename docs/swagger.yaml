@@ -25,10 +25,10 @@ definitions:
   schemas.LoginRequest:
     properties:
       email:
-        example: nandarusfikri@gmail.com
+        example: super.admin@gmail.com
         type: string
       password:
-        example: Password1!
+        example: "12345678"
         type: string
     required:
     - email
@@ -155,7 +155,7 @@ info:
     email: nandarusfikri@gmail.com
     name: API Support
     url: http://www.swagger.io/support
-  description: This is a sample server celler server.
+  description: This Project Template Go which i usually use.
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html

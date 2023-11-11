@@ -3,7 +3,7 @@ services:
   backend-api:
     container_name: backend-api
     build:
-      context: ..
+      context: .
       dockerfile: Dockerfile
     restart: always
     init: true
@@ -36,8 +36,6 @@ services:
       - "5432:5432"
     networks:
       - net-nanda
-    volumes:
-      - ./db.sql:/docker-entrypoint-initdb.d/db.sql
 networks:
   net-nanda:
     driver: bridge

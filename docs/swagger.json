@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a sample server celler server.",
+        "description": "This Project Template Go which i usually use.",
         "title": "go-template-project",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
@@ -360,11 +360,11 @@
             "properties": {
                 "email": {
                     "type": "string",
-                    "example": "nandarusfikri@gmail.com"
+                    "example": "super.admin@gmail.com"
                 },
                 "password": {
                     "type": "string",
-                    "example": "Password1!"
+                    "example": "12345678"
                 }
             }
         },

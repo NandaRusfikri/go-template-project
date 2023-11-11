@@ -18,5 +18,5 @@ clean:
 
 
 swag:
-	swag init  -g presentation/server/server.go
+	swag init  -g pkg/swagger.go
 

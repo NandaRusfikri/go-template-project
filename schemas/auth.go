@@ -13,8 +13,8 @@ type ResetPassword struct {
 }
 
 type LoginRequest struct {
-	Email    string `json:"email" binding:"required" example:"nandarusfikri@gmail.com"`
-	Password string `json:"password" binding:"required" example:"Password1!"`
+	Email    string `json:"email" binding:"required" example:"super.admin@gmail.com"`
+	Password string `json:"password" binding:"required" example:"12345678"`
 }
 type LoginResponse struct {
 	Id          uint64    `json:"id,omitempty"`

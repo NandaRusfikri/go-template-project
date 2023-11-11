@@ -40,7 +40,17 @@ To run the project, run the following command:
 docker-compose up -d
 ```
 
-You should be able to access the API at http://localhost:54321
+
+## Generate Swagger Doc
+
+To run the project, run the following command:
+
+```
+make swag
+```
+
+You should be able to access the API at http://localhost:54321/swagger/index.html
+
 
 ## Folder Structure Pattern
 

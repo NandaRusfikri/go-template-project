@@ -5,7 +5,7 @@ FROM golang:1.20-alpine as Build
 WORKDIR /app
 
 # Langkah 5: Salin kode sumber aplikasi Golang Anda ke dalam container
-COPY .. .
+COPY . .
 
 # Langkah 6: Kompilasi aplikasi Golang
 RUN go build -o main main.go

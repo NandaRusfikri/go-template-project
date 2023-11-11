@@ -3,10 +3,7 @@ package server
 import (
 	"fmt"
 	log "github.com/sirupsen/logrus"
-	swaggerfiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 	"go-template-project/database"
-	"go-template-project/docs"
 	auth_controller "go-template-project/module/auth/controller"
 	auth_repo "go-template-project/module/auth/repository"
 	auth_usecase "go-template-project/module/auth/usecase"
@@ -18,7 +15,6 @@ import (
 	user_repo "go-template-project/module/user/repository"
 	user_usecase "go-template-project/module/user/usecase"
 	"go-template-project/pkg"
-	"os"
 	"strconv"
 )
 
@@ -29,6 +25,13 @@ func Start() {
 	if err != nil {
 		log.Errorln("REST_PORT is not valid ", err.Error())
 	}
+
+	//redisClient := pkg.InitRedis(pkg.GetRedisConfig())
+	//err = redisClient.New()
+	//if err != nil {
+	//	log.Fatal(err)
+	//	return
+	//}
 
 	SMTPPort, err := strconv.Atoi(ConfEnv.SMTP_PORT)
 	if err != nil {
@@ -49,30 +52,7 @@ func Start() {
 	}
 
 	httpGin := pkg.SetupGin(ConfEnv)
-	docs.SwaggerInfo.BasePath = "/api"
-	docs.SwaggerInfo.Title = "go-template-project"
-	docs.SwaggerInfo.Description = "go-template-project"
-	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = os.Getenv("SWAGGER_HOST")
-	docs.SwaggerInfo.Schemes = []string{"http", "https"}
-
-	// @title go-template-project
-	// @version 1.0
-	// @description This is a sample server celler server.
-	// @termsOfService http://swagger.io/terms/
-
-	// @contact.name API Support
-	// @contact.url http://www.swagger.io/support
-	// @contact.email nandarusfikri@gmail.com
-	// @license.name Apache 2.0
-	// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
-	// @query.collection.format multi
-	// @securityDefinitions.apikey ApiKeyAuth
-	// @in header
-	// @name Authorization
-	// @x-extension-openapi {"example": "value on a json format"}
-
-	httpGin.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	pkg.InitSwagger(httpGin)
 
 	AuthRepo := auth_repo.InitAuthRepository(DBPostgres)
 	UserRepo := user_repo.InitUserRepository(DBPostgres)
