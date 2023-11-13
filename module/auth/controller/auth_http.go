@@ -26,7 +26,7 @@ func InitAuthControllerHTTP(route *gin.Engine, auth_usercase auth.AuthUseCase) {
 // ResetPassword
 // @Tags Auth
 // @Summary Reset Password
-// @Description Reset Password
+// @Description API for confirm reset password
 // @ID User-ResetPassword
 // @Security ApiKeyAuth
 // @Accept  json
@@ -54,7 +54,7 @@ func (c *AuthControllerHTTP) ResetPassword(ctx *gin.Context) {
 // RequestForgotPassword
 // @Tags Auth
 // @Summary  Forgot Password
-// @Description  Forgot Password
+// @Description  API for Request Forgot Password
 // @ID User-ForgotPassword
 // @Security ApiKeyAuth
 // @Accept  json
@@ -82,7 +82,7 @@ func (c *AuthControllerHTTP) RequestForgotPassword(ctx *gin.Context) {
 // LoginController
 // @Tags Auth
 // @Summary Login
-// @Description Login
+// @Description API for Login
 // @ID User-LoginController
 // @Security ApiKeyAuth
 // @Accept  json

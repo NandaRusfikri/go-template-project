@@ -31,7 +31,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Forgot Password",
+                "description": "API for Request Forgot Password",
                 "consumes": [
                     "application/json"
                 ],
@@ -68,7 +68,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Login",
+                "description": "API for Login",
                 "consumes": [
                     "application/json"
                 ],
@@ -105,7 +105,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Reset Password",
+                "description": "API for confirm reset password",
                 "consumes": [
                     "application/json"
                 ],
@@ -179,7 +179,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "User Update",
+                "description": "API untuk mengedit data user",
                 "consumes": [
                     "application/json"
                 ],
@@ -214,7 +214,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "User Insert",
+                "description": "API untuk menambahkan user baru",
                 "consumes": [
                     "application/json"
                 ],
@@ -251,7 +251,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Change Password",
+                "description": "API for change password user",
                 "consumes": [
                     "application/json"
                 ],
@@ -288,7 +288,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "User List",
+                "description": "API untuk mengambil data list user",
                 "consumes": [
                     "application/json"
                 ],
@@ -421,18 +421,12 @@ const docTemplate = `{
             "required": [
                 "email",
                 "name",
-                "password",
-                "role_id",
-                "team_id"
+                "password"
             ],
             "properties": {
                 "email": {
                     "type": "string",
                     "example": "nandarusfikri@gmail.com"
-                },
-                "manager_id": {
-                    "type": "integer",
-                    "example": 1
                 },
                 "name": {
                     "type": "string",
@@ -441,14 +435,6 @@ const docTemplate = `{
                 "password": {
                     "type": "string",
                     "example": "Password1!"
-                },
-                "role_id": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "team_id": {
-                    "type": "integer",
-                    "example": 1
                 }
             }
         },
@@ -470,10 +456,6 @@ const docTemplate = `{
                     "type": "boolean",
                     "example": true
                 },
-                "manager_id": {
-                    "type": "integer",
-                    "example": 1
-                },
                 "name": {
                     "type": "string",
                     "example": "Nanda Rusfikri"
@@ -481,14 +463,6 @@ const docTemplate = `{
                 "phone": {
                     "type": "string",
                     "example": "08123456789"
-                },
-                "role_id": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "team_id": {
-                    "type": "integer",
-                    "example": 1
                 }
             }
         },

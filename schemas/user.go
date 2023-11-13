@@ -26,22 +26,16 @@ type UsersResponse struct {
 	AvatarPath string ` json:"avatar_path"`
 }
 type UserInsert struct {
-	Email     string `json:"email" binding:"required" example:"nandarusfikri@gmail.com"`
-	Password  string `json:"password" binding:"required" example:"Password1!"`
-	Name      string `json:"name" binding:"required" example:"Nanda Rusfikri"`
-	TeamId    uint64 `json:"team_id" binding:"required" example:"1"`
-	RoleId    uint64 `json:"role_id" binding:"required" example:"1"`
-	ManagerId uint64 `json:"manager_id" binding:"-" example:"1"`
+	Email    string `json:"email" binding:"required" example:"nandarusfikri@gmail.com"`
+	Password string `json:"password" binding:"required" example:"Password1!"`
+	Name     string `json:"name" binding:"required" example:"Nanda Rusfikri"`
 }
 type UserUpdate struct {
-	Id        uint64 `json:"id" binding:"required" example:"1"`
-	Email     string `json:"email" binding:"-" example:"nandarusfikri@gmail.com"`
-	Name      string `json:"name" binding:"-" example:"Nanda Rusfikri"`
-	Phone     string `json:"phone" binding:"-" example:"08123456789"`
-	IsActive  *bool  ` json:"is_active" example:"true"`
-	TeamId    uint64 `json:"team_id" binding:"-" example:"1"`
-	RoleId    uint64 `json:"role_id" binding:"-" example:"1"`
-	ManagerId uint64 `json:"manager_id" binding:"-" example:"1"`
+	Id       uint64 `json:"id" binding:"required" example:"1"`
+	Email    string `json:"email" binding:"-" example:"nandarusfikri@gmail.com"`
+	Name     string `json:"name" binding:"-" example:"Nanda Rusfikri"`
+	Phone    string `json:"phone" binding:"-" example:"08123456789"`
+	IsActive *bool  ` json:"is_active" example:"true"`
 }
 
 type UserDetail struct {

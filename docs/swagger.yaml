@@ -67,27 +67,16 @@ definitions:
       email:
         example: nandarusfikri@gmail.com
         type: string
-      manager_id:
-        example: 1
-        type: integer
       name:
         example: Nanda Rusfikri
         type: string
       password:
         example: Password1!
         type: string
-      role_id:
-        example: 1
-        type: integer
-      team_id:
-        example: 1
-        type: integer
     required:
     - email
     - name
     - password
-    - role_id
-    - team_id
     type: object
   schemas.UserUpdate:
     properties:
@@ -100,21 +89,12 @@ definitions:
       is_active:
         example: true
         type: boolean
-      manager_id:
-        example: 1
-        type: integer
       name:
         example: Nanda Rusfikri
         type: string
       phone:
         example: "08123456789"
         type: string
-      role_id:
-        example: 1
-        type: integer
-      team_id:
-        example: 1
-        type: integer
     required:
     - id
     type: object
@@ -167,7 +147,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Forgot Password
+      description: API for Request Forgot Password
       operationId: User-ForgotPassword
       parameters:
       - description: body data
@@ -190,7 +170,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Login
+      description: API for Login
       operationId: User-LoginController
       parameters:
       - description: body data
@@ -213,7 +193,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Reset Password
+      description: API for confirm reset password
       operationId: User-ResetPassword
       parameters:
       - description: body data
@@ -259,7 +239,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: User Insert
+      description: API untuk menambahkan user baru
       operationId: User-UserInsert
       parameters:
       - description: body data
@@ -281,7 +261,7 @@ paths:
     put:
       consumes:
       - application/json
-      description: User Update
+      description: API untuk mengedit data user
       operationId: User-UserUpdate
       parameters:
       - description: body data
@@ -304,7 +284,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Change Password
+      description: API for change password user
       operationId: User-ChangePassword
       parameters:
       - description: body data
@@ -327,7 +307,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: User List
+      description: API untuk mengambil data list user
       operationId: User-UserList
       parameters:
       - description: body data

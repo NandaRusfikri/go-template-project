@@ -28,7 +28,7 @@ func InitUserControllerHTTP(route *gin.Engine, user_usecase user.UserUseCase) {
 // ChangePassword
 // @Tags User
 // @Summary Change Password
-// @Description Change Password
+// @Description API for change password user
 // @ID User-ChangePassword
 // @Security ApiKeyAuth
 // @Accept  json
@@ -56,7 +56,7 @@ func (c *UserControllerHTTP) ChangePassword(ctx *gin.Context) {
 // UserList
 // @Tags User
 // @Summary  User List
-// @Description  User List
+// @Description  API untuk mengambil data list user
 // @ID User-UserList
 // @Security ApiKeyAuth
 // @Accept  json
@@ -84,7 +84,7 @@ func (c *UserControllerHTTP) UserList(ctx *gin.Context) {
 // InsertUser
 // @Tags User
 // @Summary  User Insert
-// @Description  User Insert
+// @Description  API untuk menambahkan user baru
 // @ID User-UserInsert
 // @Security ApiKeyAuth
 // @Accept  json
@@ -113,7 +113,7 @@ func (c *UserControllerHTTP) InsertUser(ctx *gin.Context) {
 // UserUpdate
 // @Tags User
 // @Summary  User Update
-// @Description  User Update
+// @Description  API untuk mengedit data user
 // @ID User-UserUpdate
 // @Security ApiKeyAuth
 // @Accept  json
