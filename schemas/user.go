@@ -1,13 +1,13 @@
 package schemas
 
 type UsersRequest struct {
-	SearchText string `json:"search_text"`
-	Page       int    `json:"page" example:"1"`
-	Limit      int    `json:"limit" example:"10"`
-	OrderField string `json:"order_field" form:"order_field" example:"id|desc"`
+	SearchText string `form:"search_text"`
+	Page       int    `form:"page" example:"1"`
+	Limit      int    `form:"limit" example:"10"`
+	OrderField string `form:"order_field" example:"id|desc"`
 	//Email      string `json:"email"`
 	//Phone      string `json:"phone"`
-	IsActive *bool `json:"is_active"`
+	IsActive *bool `form:"is_active"`
 }
 
 type CheckEmail struct {

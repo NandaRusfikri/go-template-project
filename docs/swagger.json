@@ -128,7 +128,7 @@
             }
         },
         "/v1/products": {
-            "post": {
+            "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
@@ -274,7 +274,7 @@
             }
         },
         "/v1/users": {
-            "post": {
+            "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []

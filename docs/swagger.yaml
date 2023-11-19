@@ -213,7 +213,7 @@ paths:
       tags:
       - Auth
   /v1/products:
-    post:
+    get:
       consumes:
       - application/json
       description: Product List
@@ -304,7 +304,7 @@ paths:
       tags:
       - User
   /v1/users:
-    post:
+    get:
       consumes:
       - application/json
       description: API untuk mengambil data list user

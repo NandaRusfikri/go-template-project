@@ -19,7 +19,7 @@ func InitUserControllerHTTP(route *gin.Engine, user_usecase user.UserUseCase) {
 		user_usecase: user_usecase,
 	}
 	groupRoute := route.Group("/api/v1")
-	groupRoute.POST("/users", pkg.Auth, controller.UserList)
+	groupRoute.GET("/users", pkg.Auth, controller.UserList)
 	groupRoute.POST("/user", pkg.Auth, controller.InsertUser)
 	groupRoute.PUT("/user", pkg.Auth, controller.UserUpdate)
 	groupRoute.POST("/user/change-password", pkg.Auth, controller.ChangePassword)
@@ -63,12 +63,12 @@ func (c *UserControllerHTTP) ChangePassword(ctx *gin.Context) {
 // @Produce  json
 // @Param data body schemas.UsersRequest true "body data"
 // @Success 200 {array}  schemas.UsersResponse
-// @Router /v1/users [post]
+// @Router /v1/users [get]
 func (c *UserControllerHTTP) UserList(ctx *gin.Context) {
 
 	var input schemas.UsersRequest
 
-	if err := ctx.ShouldBindJSON(&input); err != nil {
+	if err := ctx.ShouldBindQuery(&input); err != nil {
 		util.APIResponse(ctx, "Request Invalid", 400, 0, nil)
 		return
 	}

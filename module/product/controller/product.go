@@ -18,7 +18,7 @@ func InitProductControllerHTTP(route *gin.Engine, service product.ProductUseCase
 		product_usecase: service,
 	}
 	groupRoute := route.Group("/api/v1")
-	groupRoute.POST("/products", controller.ProductList)
+	groupRoute.GET("/products", controller.ProductList)
 }
 
 // ProductList
@@ -31,12 +31,12 @@ func InitProductControllerHTTP(route *gin.Engine, service product.ProductUseCase
 // @Produce  json
 // @Param data body schemas.ProductsRequest true "body data"
 // @Success 200
-// @Router /v1/products [post]
+// @Router /v1/products [get]
 func (c *ProductControllerHTTP) ProductList(ctx *gin.Context) {
 
 	var input schemas.ProductsRequest
 
-	if err := ctx.ShouldBindJSON(&input); err != nil {
+	if err := ctx.ShouldBindQuery(&input); err != nil {
 		util.APIResponse(ctx, "request invalid", 400, 0, nil)
 		return
 	}

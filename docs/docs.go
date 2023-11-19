@@ -136,7 +136,7 @@ const docTemplate = `{
             }
         },
         "/v1/products": {
-            "post": {
+            "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
@@ -282,7 +282,7 @@ const docTemplate = `{
             }
         },
         "/v1/users": {
-            "post": {
+            "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
