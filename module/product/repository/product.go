@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"go-template-project/constant"
+	"go-template-project/dto"
 	"go-template-project/module/product"
 	"go-template-project/module/product/entity"
-	"go-template-project/schemas"
 	"go-template-project/util"
 	"gorm.io/gorm"
 	"strings"
@@ -22,23 +22,23 @@ func InitProductRepository(dbCon *gorm.DB) product.ProductRepository {
 	}
 }
 
-func (r *ProductRepository) GetIds(ids []uint64) ([]uint64, schemas.ResponseError) {
+func (r *ProductRepository) GetIds(ids []uint64) ([]uint64, dto.ResponseError) {
 
 	var ArrayId []uint64
 	Check := r.db.Model(&entity.MSProduct{}).Select("id").Where("id IN ?", ids).Find(&ArrayId)
 
 	if Check.Error != nil {
 		if errors.Is(Check.Error, gorm.ErrRecordNotFound) {
-			return nil, schemas.ResponseError{Error: Check.Error, Code: 404}
+			return nil, dto.ResponseError{Error: Check.Error, Code: 404}
 		}
-		return nil, schemas.ResponseError{Error: Check.Error, Code: 500}
+		return nil, dto.ResponseError{Error: Check.Error, Code: 500}
 	}
 
-	return ArrayId, schemas.ResponseError{}
+	return ArrayId, dto.ResponseError{}
 
 }
 
-func (r *ProductRepository) ProductList(input schemas.ProductsRequest) ([]*entity.MSProduct, int64, schemas.ResponseError) {
+func (r *ProductRepository) ProductList(input dto.ProductsRequest) ([]*entity.MSProduct, int64, dto.ResponseError) {
 
 	var ListItem []*entity.MSProduct
 
@@ -53,11 +53,11 @@ func (r *ProductRepository) ProductList(input schemas.ProductsRequest) ([]*entit
 
 	dbCount := db.Model(entity.MSProduct{}).Count(&count)
 	if dbCount.Error != nil && !errors.Is(dbCount.Error, gorm.ErrRecordNotFound) {
-		return nil, 0, schemas.ResponseError{Error: dbCount.Error, Code: 500}
+		return nil, 0, dto.ResponseError{Error: dbCount.Error, Code: 500}
 	}
 
 	if count < 1 {
-		return nil, 0, schemas.ResponseError{}
+		return nil, 0, dto.ResponseError{}
 	}
 
 	orderByQuery := ""
@@ -84,25 +84,25 @@ func (r *ProductRepository) ProductList(input schemas.ProductsRequest) ([]*entit
 	Find := db.Find(&ListItem)
 	if Find.Error != nil {
 		if errors.Is(Find.Error, gorm.ErrRecordNotFound) {
-			return nil, 0, schemas.ResponseError{Error: Find.Error, Code: 401}
+			return nil, 0, dto.ResponseError{Error: Find.Error, Code: 401}
 		}
-		return nil, 0, schemas.ResponseError{Error: Find.Error, Code: 500}
+		return nil, 0, dto.ResponseError{Error: Find.Error, Code: 500}
 	}
 
-	return ListItem, count, schemas.ResponseError{}
+	return ListItem, count, dto.ResponseError{}
 
 }
 
-func (r *ProductRepository) ProductInsert(input entity.MSProduct) schemas.ResponseError {
+func (r *ProductRepository) ProductInsert(input entity.MSProduct) dto.ResponseError {
 
 	Create := r.db.Create(&input)
 	if Create.Error != nil {
-		return schemas.ResponseError{Error: Create.Error, Code: 500}
+		return dto.ResponseError{Error: Create.Error, Code: 500}
 	}
 	if Create.RowsAffected < 1 {
-		return schemas.ResponseError{Error: fmt.Errorf("Error Insert"), Code: 500}
+		return dto.ResponseError{Error: fmt.Errorf("Error Insert"), Code: 500}
 	}
 
-	return schemas.ResponseError{}
+	return dto.ResponseError{}
 
 }

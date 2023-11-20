@@ -1,4 +1,4 @@
-package schemas
+package dto
 
 type ResponseSuccess struct {
 	Code    int         `json:"code"`

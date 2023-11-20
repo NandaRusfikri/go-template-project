@@ -101,7 +101,7 @@ You should be able to access the API at http://localhost:54321/swagger/index.htm
 └── presentation
 │   └── server
 │   │     └── server.go
-└── schemas
+└── dto
 │   └── auth.go
 │   └── user.go
 └── util
@@ -137,7 +137,7 @@ You should be able to access the API at http://localhost:54321/swagger/index.htm
 |-----------------|--------------------------------------------|
 | *usecase*       | *Kumpulan fungsi yang berisi logic bisnis* | 
 
-- #### Schemas
+- #### DTO (Data Transfer Object)
 | **Folder Name** | **Description**                                                                                                                                                                                              |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| *Schemas*       | *Kumpulan fungsi yang digunakan untuk merepresentasikan structure request yang di inginkan, sesuai dengan request yang di perlukan oleh database, yang nanti nya akan digunakan untuk aplikasi itu sendiri.* | 
+|-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| *dto*           | *Kumpulan Object yang digunakan untuk merepresentasikan structure request yang di inginkan, sesuai dengan request yang di perlukan oleh database, yang nanti nya akan digunakan untuk aplikasi itu sendiri.* | 

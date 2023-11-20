@@ -1,4 +1,4 @@
-package schemas
+package dto
 
 type UsersRequest struct {
 	SearchText string `form:"search_text"`

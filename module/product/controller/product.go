@@ -2,8 +2,8 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"go-template-project/dto"
 	"go-template-project/module/product"
-	"go-template-project/schemas"
 	"go-template-project/util"
 	"net/http"
 )
@@ -29,12 +29,12 @@ func InitProductControllerHTTP(route *gin.Engine, service product.ProductUseCase
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce  json
-// @Param data body schemas.ProductsRequest true "body data"
+// @Param data body dto.ProductsRequest true "body data"
 // @Success 200
 // @Router /v1/products [get]
 func (c *ProductControllerHTTP) ProductList(ctx *gin.Context) {
 
-	var input schemas.ProductsRequest
+	var input dto.ProductsRequest
 
 	if err := ctx.ShouldBindQuery(&input); err != nil {
 		util.APIResponse(ctx, "request invalid", 400, 0, nil)

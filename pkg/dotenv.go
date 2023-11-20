@@ -3,11 +3,11 @@ package pkg
 import (
 	"fmt"
 	"github.com/joho/godotenv"
-	"go-template-project/schemas"
+	"go-template-project/dto"
 	"os"
 )
 
-func LoadEnvironment(path string) (config schemas.ConfigEnvironment) {
+func LoadEnvironment(path string) (config dto.ConfigEnvironment) {
 	err := godotenv.Load(path)
 	if err != nil {
 		fmt.Println("Error loading .env file")

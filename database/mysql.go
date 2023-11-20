@@ -3,12 +3,12 @@ package database
 import (
 	"fmt"
 	"github.com/sirupsen/logrus"
-	"go-template-project/schemas"
+	"go-template-project/dto"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-func SetupDBMysql(config schemas.ConfigEnvironment) (*gorm.DB, error) {
+func SetupDBMysql(config dto.ConfigEnvironment) (*gorm.DB, error) {
 	logrus.Debug("🔌 Connecting to Database")
 	dbUsername := config.DB_USER
 	dbPassword := config.DB_PASS

@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"go-template-project/constant"
+	"go-template-project/dto"
 	user_entity "go-template-project/module/user/entity"
-	"go-template-project/schemas"
 	"go-template-project/util"
 	"gorm.io/gorm"
 	"strings"
@@ -19,7 +19,7 @@ func InitUserRepository(db *gorm.DB) *UserRepository {
 	return &UserRepository{db: db}
 }
 
-func (r *UserRepository) UserList(input schemas.UsersRequest) ([]*schemas.UsersResponse, int64, schemas.ResponseError) {
+func (r *UserRepository) UserList(input dto.UsersRequest) ([]*dto.UsersResponse, int64, dto.ResponseError) {
 	ListEntityUser := []*user_entity.EntityUser{}
 
 	db := r.db.Debug().Model(&user_entity.EntityUser{})
@@ -38,11 +38,11 @@ func (r *UserRepository) UserList(input schemas.UsersRequest) ([]*schemas.UsersR
 
 	dbCount := db.Table(constant.TABLE_MS_USER).Model(user_entity.EntityUser{}).Count(&count)
 	if dbCount.Error != nil && !errors.Is(dbCount.Error, gorm.ErrRecordNotFound) {
-		return nil, 0, schemas.ResponseError{Error: dbCount.Error, Code: 500}
+		return nil, 0, dto.ResponseError{Error: dbCount.Error, Code: 500}
 	}
 
 	if count < 1 {
-		return []*schemas.UsersResponse{}, 0, schemas.ResponseError{}
+		return []*dto.UsersResponse{}, 0, dto.ResponseError{}
 	}
 	orderByQuery := ""
 	if input.OrderField != "" {
@@ -68,14 +68,14 @@ func (r *UserRepository) UserList(input schemas.UsersRequest) ([]*schemas.UsersR
 	Find := db.Debug().Find(&ListEntityUser)
 	if Find.Error != nil {
 		if errors.Is(Find.Error, gorm.ErrRecordNotFound) {
-			return nil, 0, schemas.ResponseError{Error: Find.Error, Code: 401}
+			return nil, 0, dto.ResponseError{Error: Find.Error, Code: 401}
 		}
-		return nil, 0, schemas.ResponseError{Error: Find.Error, Code: 500}
+		return nil, 0, dto.ResponseError{Error: Find.Error, Code: 500}
 	}
 
-	ListSchemaUser := []*schemas.UsersResponse{}
+	ListSchemaUser := []*dto.UsersResponse{}
 	for _, user := range ListEntityUser {
-		DataUser := schemas.UsersResponse{
+		DataUser := dto.UsersResponse{
 			Id:         user.ID,
 			Name:       user.Name,
 			Email:      user.Email,
@@ -88,10 +88,10 @@ func (r *UserRepository) UserList(input schemas.UsersRequest) ([]*schemas.UsersR
 		ListSchemaUser = append(ListSchemaUser, &DataUser)
 	}
 
-	return ListSchemaUser, count, schemas.ResponseError{}
+	return ListSchemaUser, count, dto.ResponseError{}
 }
 
-func (r *UserRepository) GetById(id uint64) (*user_entity.EntityUser, schemas.ResponseError) {
+func (r *UserRepository) GetById(id uint64) (*user_entity.EntityUser, dto.ResponseError) {
 	EntityUser := user_entity.EntityUser{}
 
 	db := r.db.Where("id = ?", id)
@@ -100,60 +100,60 @@ func (r *UserRepository) GetById(id uint64) (*user_entity.EntityUser, schemas.Re
 
 	if Find.Error != nil {
 		if errors.Is(Find.Error, gorm.ErrRecordNotFound) {
-			return nil, schemas.ResponseError{Error: Find.Error, Code: 401}
+			return nil, dto.ResponseError{Error: Find.Error, Code: 401}
 		}
-		return nil, schemas.ResponseError{Error: Find.Error, Code: 500}
+		return nil, dto.ResponseError{Error: Find.Error, Code: 500}
 	}
 
-	return &EntityUser, schemas.ResponseError{}
+	return &EntityUser, dto.ResponseError{}
 }
 
-func (r *UserRepository) CreateUser(input user_entity.EntityUser) schemas.ResponseError {
+func (r *UserRepository) CreateUser(input user_entity.EntityUser) dto.ResponseError {
 
 	IsActive := true
 	input.IsActive = &IsActive
 	Create := r.db.Create(&input)
 	if Create.Error != nil {
-		return schemas.ResponseError{Error: Create.Error, Code: 500}
+		return dto.ResponseError{Error: Create.Error, Code: 500}
 	}
 	if Create.RowsAffected < 1 {
-		return schemas.ResponseError{Error: errors.New("user Create Error"), Code: 500}
+		return dto.ResponseError{Error: errors.New("user Create Error"), Code: 500}
 	}
 
-	return schemas.ResponseError{}
+	return dto.ResponseError{}
 
 }
 
-func (r *UserRepository) CheckEmail(email string) (*user_entity.EntityUser, schemas.ResponseError) {
+func (r *UserRepository) CheckEmail(email string) (*user_entity.EntityUser, dto.ResponseError) {
 
 	var user user_entity.EntityUser
 	CheckEmail := r.db.Debug().Where("email = ?", email).First(&user)
 	if CheckEmail.Error != nil {
-		return nil, schemas.ResponseError{Error: CheckEmail.Error, Code: 404}
+		return nil, dto.ResponseError{Error: CheckEmail.Error, Code: 404}
 	}
 
-	return &user, schemas.ResponseError{}
+	return &user, dto.ResponseError{}
 }
 
-func (r *UserRepository) CheckUsername(username string) (*user_entity.EntityUser, schemas.ResponseError) {
+func (r *UserRepository) CheckUsername(username string) (*user_entity.EntityUser, dto.ResponseError) {
 	var user user_entity.EntityUser
 	CheckUsername := r.db.Where("username = ?", username).First(&user)
 	if CheckUsername.Error != nil {
-		return nil, schemas.ResponseError{Error: CheckUsername.Error, Code: 404}
+		return nil, dto.ResponseError{Error: CheckUsername.Error, Code: 404}
 	}
 
-	return &user, schemas.ResponseError{}
+	return &user, dto.ResponseError{}
 }
 
-func (r *UserRepository) UpdateUser(input user_entity.EntityUser) (*user_entity.EntityUser, schemas.ResponseError) {
+func (r *UserRepository) UpdateUser(input user_entity.EntityUser) (*user_entity.EntityUser, dto.ResponseError) {
 
 	var entity user_entity.EntityUser
 	Find := r.db.Where("id = ?", input.ID).First(&entity)
 	if Find.Error != nil {
 		if errors.Is(Find.Error, gorm.ErrRecordNotFound) {
-			return nil, schemas.ResponseError{Error: Find.Error, Code: 401}
+			return nil, dto.ResponseError{Error: Find.Error, Code: 401}
 		}
-		return nil, schemas.ResponseError{Error: Find.Error, Code: 500}
+		return nil, dto.ResponseError{Error: Find.Error, Code: 500}
 	}
 
 	entity.Name = input.Name
@@ -164,13 +164,13 @@ func (r *UserRepository) UpdateUser(input user_entity.EntityUser) (*user_entity.
 
 	Update := r.db.Save(&entity)
 	if Update.Error != nil {
-		return nil, schemas.ResponseError{Error: Update.Error, Code: 500}
+		return nil, dto.ResponseError{Error: Update.Error, Code: 500}
 	}
 
-	return &entity, schemas.ResponseError{}
+	return &entity, dto.ResponseError{}
 }
 
-func (r *UserRepository) ChangePassword(user_id uint64, new_password string) schemas.ResponseError {
+func (r *UserRepository) ChangePassword(user_id uint64, new_password string) dto.ResponseError {
 
 	entity := user_entity.EntityUser{
 		ID:       user_id,
@@ -179,8 +179,8 @@ func (r *UserRepository) ChangePassword(user_id uint64, new_password string) sch
 
 	Update := r.db.Updates(&entity)
 	if Update.Error != nil {
-		return schemas.ResponseError{Error: Update.Error, Code: 500}
+		return dto.ResponseError{Error: Update.Error, Code: 500}
 	}
 
-	return schemas.ResponseError{}
+	return dto.ResponseError{}
 }

@@ -1,4 +1,4 @@
-package schemas
+package dto
 
 import (
 	jwt "github.com/dgrijalva/jwt-go"

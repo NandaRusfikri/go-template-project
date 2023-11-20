@@ -2,8 +2,8 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"go-template-project/dto"
 	"go-template-project/module/auth"
-	"go-template-project/schemas"
 	"go-template-project/util"
 	"net/http"
 )
@@ -31,12 +31,12 @@ func InitAuthControllerHTTP(route *gin.Engine, auth_usercase auth.AuthUseCase) {
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce  json
-// @Param data body schemas.ResetPassword true "body data"
+// @Param data body dto.ResetPassword true "body data"
 // @Success 200
 // @Router /v1/auth/reset-password [post]
 func (c *AuthControllerHTTP) ResetPassword(ctx *gin.Context) {
 
-	var input schemas.ResetPassword
+	var input dto.ResetPassword
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {
 		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
@@ -59,12 +59,12 @@ func (c *AuthControllerHTTP) ResetPassword(ctx *gin.Context) {
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce  json
-// @Param data body schemas.ForgotPassword true "body data"
+// @Param data body dto.ForgotPassword true "body data"
 // @Success 200
 // @Router /v1/auth/forgot-password [post]
 func (c *AuthControllerHTTP) RequestForgotPassword(ctx *gin.Context) {
 
-	var input schemas.ForgotPassword
+	var input dto.ForgotPassword
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {
 		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
@@ -87,12 +87,12 @@ func (c *AuthControllerHTTP) RequestForgotPassword(ctx *gin.Context) {
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce  json
-// @Param data body schemas.LoginRequest true "body data"
+// @Param data body dto.LoginRequest true "body data"
 // @Success 200
 // @Router /v1/auth/login [post]
 func (c *AuthControllerHTTP) LoginController(ctx *gin.Context) {
 
-	var input schemas.LoginRequest
+	var input dto.LoginRequest
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {
 		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)

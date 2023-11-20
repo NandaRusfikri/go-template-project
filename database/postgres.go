@@ -3,12 +3,12 @@ package database
 import (
 	"fmt"
 	"github.com/sirupsen/logrus"
-	"go-template-project/schemas"
+	"go-template-project/dto"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-func SetupDBPostgres(config schemas.ConfigEnvironment) (*gorm.DB, error) {
+func SetupDBPostgres(config dto.ConfigEnvironment) (*gorm.DB, error) {
 	logrus.Debug("🔌 Connecting into Database")
 	dbHost := config.DB_HOST
 	dbUsername := config.DB_USER

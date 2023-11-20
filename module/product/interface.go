@@ -1,15 +1,15 @@
 package product
 
 import (
+	"go-template-project/dto"
 	"go-template-project/module/product/entity"
-	"go-template-project/schemas"
 )
 
 type ProductRepository interface {
-	ProductList(input schemas.ProductsRequest) ([]*entity.MSProduct, int64, schemas.ResponseError)
-	GetIds(ids []uint64) ([]uint64, schemas.ResponseError)
+	ProductList(input dto.ProductsRequest) ([]*entity.MSProduct, int64, dto.ResponseError)
+	GetIds(ids []uint64) ([]uint64, dto.ResponseError)
 }
 
 type ProductUseCase interface {
-	ProductList(input schemas.ProductsRequest) ([]*entity.MSProduct, int64, schemas.ResponseError)
+	ProductList(input dto.ProductsRequest) ([]*entity.MSProduct, int64, dto.ResponseError)
 }

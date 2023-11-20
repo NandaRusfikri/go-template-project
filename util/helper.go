@@ -2,7 +2,7 @@ package util
 
 import (
 	"github.com/gin-gonic/gin"
-	"go-template-project/schemas"
+	"go-template-project/dto"
 	_ "image/jpeg"
 	_ "image/png"
 	"reflect"
@@ -44,7 +44,7 @@ func MapStruct(source interface{}, dest interface{}) {
 
 func APIResponse(ctx *gin.Context, Message string, StatusCode int, Count int64, Data interface{}) {
 
-	jsonResponse := schemas.ResponseSuccess{
+	jsonResponse := dto.ResponseSuccess{
 		Code: StatusCode,
 		//Method:  Method,
 		Count:   Count,

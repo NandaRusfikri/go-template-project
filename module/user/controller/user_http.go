@@ -2,9 +2,9 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"go-template-project/dto"
 	"go-template-project/module/user"
 	"go-template-project/pkg"
-	"go-template-project/schemas"
 	"go-template-project/util"
 	"net/http"
 )
@@ -33,12 +33,12 @@ func InitUserControllerHTTP(route *gin.Engine, user_usecase user.UserUseCase) {
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce  json
-// @Param data body schemas.ChangePassword true "body data"
+// @Param data body dto.ChangePassword true "body data"
 // @Success 200
 // @Router /v1/user/change-password [post]
 func (c *UserControllerHTTP) ChangePassword(ctx *gin.Context) {
 
-	var input schemas.ChangePassword
+	var input dto.ChangePassword
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {
 		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
@@ -61,12 +61,12 @@ func (c *UserControllerHTTP) ChangePassword(ctx *gin.Context) {
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce  json
-// @Param data body schemas.UsersRequest true "body data"
-// @Success 200 {array}  schemas.UsersResponse
+// @Param data body dto.UsersRequest true "body data"
+// @Success 200 {array}  dto.UsersResponse
 // @Router /v1/users [get]
 func (c *UserControllerHTTP) UserList(ctx *gin.Context) {
 
-	var input schemas.UsersRequest
+	var input dto.UsersRequest
 
 	if err := ctx.ShouldBindQuery(&input); err != nil {
 		util.APIResponse(ctx, "Request Invalid", 400, 0, nil)
@@ -89,12 +89,12 @@ func (c *UserControllerHTTP) UserList(ctx *gin.Context) {
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce  json
-// @Param data body schemas.UserInsert true "body data"
+// @Param data body dto.UserInsert true "body data"
 // @Success 200
 // @Router /v1/user [post]
 func (c *UserControllerHTTP) InsertUser(ctx *gin.Context) {
 
-	var input schemas.UserInsert
+	var input dto.UserInsert
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {
 		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
@@ -118,12 +118,12 @@ func (c *UserControllerHTTP) InsertUser(ctx *gin.Context) {
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce  json
-// @Param data body schemas.UserUpdate true "body data"
+// @Param data body dto.UserUpdate true "body data"
 // @Success 200
 // @Router /v1/user [put]
 func (c *UserControllerHTTP) UserUpdate(ctx *gin.Context) {
 
-	var input schemas.UserUpdate
+	var input dto.UserUpdate
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {
 		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)

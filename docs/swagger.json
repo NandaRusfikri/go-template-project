@@ -42,7 +42,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.ForgotPassword"
+                            "$ref": "#/definitions/dto.ForgotPassword"
                         }
                     }
                 ],
@@ -79,7 +79,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.LoginRequest"
+                            "$ref": "#/definitions/dto.LoginRequest"
                         }
                     }
                 ],
@@ -116,7 +116,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.ResetPassword"
+                            "$ref": "#/definitions/dto.ResetPassword"
                         }
                     }
                 ],
@@ -153,7 +153,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.ProductsRequest"
+                            "$ref": "#/definitions/dto.ProductsRequest"
                         }
                     }
                 ],
@@ -190,7 +190,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.UserUpdate"
+                            "$ref": "#/definitions/dto.UserUpdate"
                         }
                     }
                 ],
@@ -225,7 +225,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.UserInsert"
+                            "$ref": "#/definitions/dto.UserInsert"
                         }
                     }
                 ],
@@ -262,7 +262,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.ChangePassword"
+                            "$ref": "#/definitions/dto.ChangePassword"
                         }
                     }
                 ],
@@ -299,7 +299,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.UsersRequest"
+                            "$ref": "#/definitions/dto.UsersRequest"
                         }
                     }
                 ],
@@ -309,7 +309,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/schemas.UsersResponse"
+                                "$ref": "#/definitions/dto.UsersResponse"
                             }
                         }
                     }
@@ -318,7 +318,7 @@
         }
     },
     "definitions": {
-        "schemas.ChangePassword": {
+        "dto.ChangePassword": {
             "type": "object",
             "required": [
                 "new_password",
@@ -340,7 +340,7 @@
                 }
             }
         },
-        "schemas.ForgotPassword": {
+        "dto.ForgotPassword": {
             "type": "object",
             "required": [
                 "email"
@@ -351,7 +351,7 @@
                 }
             }
         },
-        "schemas.LoginRequest": {
+        "dto.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -368,7 +368,7 @@
                 }
             }
         },
-        "schemas.ProductsRequest": {
+        "dto.ProductsRequest": {
             "type": "object",
             "properties": {
                 "limit": {
@@ -389,7 +389,7 @@
                 }
             }
         },
-        "schemas.ResetPassword": {
+        "dto.ResetPassword": {
             "type": "object",
             "required": [
                 "email",
@@ -408,7 +408,7 @@
                 }
             }
         },
-        "schemas.UserInsert": {
+        "dto.UserInsert": {
             "type": "object",
             "required": [
                 "email",
@@ -430,7 +430,7 @@
                 }
             }
         },
-        "schemas.UserUpdate": {
+        "dto.UserUpdate": {
             "type": "object",
             "required": [
                 "id"
@@ -458,7 +458,7 @@
                 }
             }
         },
-        "schemas.UsersRequest": {
+        "dto.UsersRequest": {
             "type": "object",
             "properties": {
                 "is_active": {
@@ -482,7 +482,7 @@
                 }
             }
         },
-        "schemas.UsersResponse": {
+        "dto.UsersResponse": {
             "type": "object",
             "properties": {
                 "avatar_path": {

@@ -1,17 +1,17 @@
 package auth
 
 import (
+	"go-template-project/dto"
 	auth_entity "go-template-project/module/auth/entity"
-	"go-template-project/schemas"
 )
 
 type AuthRepository interface {
-	RequestForgotPassword(user_id uint64, token string) (*auth_entity.EntityForgotPassword, schemas.ResponseError)
-	ResetPassword(input schemas.ResetPassword) schemas.ResponseError
+	RequestForgotPassword(user_id uint64, token string) (*auth_entity.EntityForgotPassword, dto.ResponseError)
+	ResetPassword(input dto.ResetPassword) dto.ResponseError
 }
 
 type AuthUseCase interface {
-	RequestForgotPassword(input schemas.ForgotPassword) schemas.ResponseError
-	ResetPassword(input schemas.ResetPassword) schemas.ResponseError
-	Login(input schemas.LoginRequest) (*schemas.LoginResponse, schemas.ResponseError)
+	RequestForgotPassword(input dto.ForgotPassword) dto.ResponseError
+	ResetPassword(input dto.ResetPassword) dto.ResponseError
+	Login(input dto.LoginRequest) (*dto.LoginResponse, dto.ResponseError)
 }

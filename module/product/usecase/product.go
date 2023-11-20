@@ -1,9 +1,9 @@
 package usecase
 
 import (
+	"go-template-project/dto"
 	"go-template-project/module/product"
 	"go-template-project/module/product/entity"
-	"go-template-project/schemas"
 )
 
 type ProductUseCase struct {
@@ -16,7 +16,7 @@ func InitProductUseCase(repo product.ProductRepository) *ProductUseCase {
 	}
 }
 
-func (u *ProductUseCase) ProductList(input schemas.ProductsRequest) ([]*entity.MSProduct, int64, schemas.ResponseError) {
+func (u *ProductUseCase) ProductList(input dto.ProductsRequest) ([]*entity.MSProduct, int64, dto.ResponseError) {
 
 	res, count, err := u.product_repo.ProductList(input)
 

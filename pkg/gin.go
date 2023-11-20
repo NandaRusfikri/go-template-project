@@ -4,10 +4,10 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
-	"go-template-project/schemas"
+	"go-template-project/dto"
 )
 
-func SetupGin(config schemas.ConfigEnvironment) *gin.Engine {
+func SetupGin(config dto.ConfigEnvironment) *gin.Engine {
 
 	app := gin.Default()
 

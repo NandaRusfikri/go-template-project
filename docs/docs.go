@@ -50,7 +50,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.ForgotPassword"
+                            "$ref": "#/definitions/dto.ForgotPassword"
                         }
                     }
                 ],
@@ -87,7 +87,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.LoginRequest"
+                            "$ref": "#/definitions/dto.LoginRequest"
                         }
                     }
                 ],
@@ -124,7 +124,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.ResetPassword"
+                            "$ref": "#/definitions/dto.ResetPassword"
                         }
                     }
                 ],
@@ -161,7 +161,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.ProductsRequest"
+                            "$ref": "#/definitions/dto.ProductsRequest"
                         }
                     }
                 ],
@@ -198,7 +198,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.UserUpdate"
+                            "$ref": "#/definitions/dto.UserUpdate"
                         }
                     }
                 ],
@@ -233,7 +233,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.UserInsert"
+                            "$ref": "#/definitions/dto.UserInsert"
                         }
                     }
                 ],
@@ -270,7 +270,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.ChangePassword"
+                            "$ref": "#/definitions/dto.ChangePassword"
                         }
                     }
                 ],
@@ -307,7 +307,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schemas.UsersRequest"
+                            "$ref": "#/definitions/dto.UsersRequest"
                         }
                     }
                 ],
@@ -317,7 +317,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/schemas.UsersResponse"
+                                "$ref": "#/definitions/dto.UsersResponse"
                             }
                         }
                     }
@@ -326,7 +326,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "schemas.ChangePassword": {
+        "dto.ChangePassword": {
             "type": "object",
             "required": [
                 "new_password",
@@ -348,7 +348,7 @@ const docTemplate = `{
                 }
             }
         },
-        "schemas.ForgotPassword": {
+        "dto.ForgotPassword": {
             "type": "object",
             "required": [
                 "email"
@@ -359,7 +359,7 @@ const docTemplate = `{
                 }
             }
         },
-        "schemas.LoginRequest": {
+        "dto.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -376,7 +376,7 @@ const docTemplate = `{
                 }
             }
         },
-        "schemas.ProductsRequest": {
+        "dto.ProductsRequest": {
             "type": "object",
             "properties": {
                 "limit": {
@@ -397,7 +397,7 @@ const docTemplate = `{
                 }
             }
         },
-        "schemas.ResetPassword": {
+        "dto.ResetPassword": {
             "type": "object",
             "required": [
                 "email",
@@ -416,7 +416,7 @@ const docTemplate = `{
                 }
             }
         },
-        "schemas.UserInsert": {
+        "dto.UserInsert": {
             "type": "object",
             "required": [
                 "email",
@@ -438,7 +438,7 @@ const docTemplate = `{
                 }
             }
         },
-        "schemas.UserUpdate": {
+        "dto.UserUpdate": {
             "type": "object",
             "required": [
                 "id"
@@ -466,7 +466,7 @@ const docTemplate = `{
                 }
             }
         },
-        "schemas.UsersRequest": {
+        "dto.UsersRequest": {
             "type": "object",
             "properties": {
                 "is_active": {
@@ -490,7 +490,7 @@ const docTemplate = `{
                 }
             }
         },
-        "schemas.UsersResponse": {
+        "dto.UsersResponse": {
             "type": "object",
             "properties": {
                 "avatar_path": {

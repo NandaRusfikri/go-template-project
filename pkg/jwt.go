@@ -3,7 +3,7 @@ package pkg
 import (
 	"encoding/json"
 	"fmt"
-	"go-template-project/schemas"
+	"go-template-project/dto"
 	"os"
 	"strings"
 	"time"
@@ -24,7 +24,7 @@ type AccessToken struct {
 	Claims MetaToken
 }
 
-func Sign(claims schemas.Claims, JwtSecretKey string) (string, error) {
+func Sign(claims dto.Claims, JwtSecretKey string) (string, error) {
 
 	jwtSecretKey := JwtSecretKey
 

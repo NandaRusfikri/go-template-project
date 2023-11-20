@@ -1,4 +1,4 @@
-package schemas
+package dto
 
 type ConfigEnvironment struct {
 	DB_USER    string

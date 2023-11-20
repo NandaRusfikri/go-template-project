@@ -1,5 +1,5 @@
 definitions:
-  schemas.ChangePassword:
+  dto.ChangePassword:
     properties:
       new_password:
         example: Password1!
@@ -15,14 +15,14 @@ definitions:
     - old_password
     - user_id
     type: object
-  schemas.ForgotPassword:
+  dto.ForgotPassword:
     properties:
       email:
         type: string
     required:
     - email
     type: object
-  schemas.LoginRequest:
+  dto.LoginRequest:
     properties:
       email:
         example: super.admin@gmail.com
@@ -34,7 +34,7 @@ definitions:
     - email
     - password
     type: object
-  schemas.ProductsRequest:
+  dto.ProductsRequest:
     properties:
       limit:
         example: 10
@@ -49,7 +49,7 @@ definitions:
         example: Search name ku
         type: string
     type: object
-  schemas.ResetPassword:
+  dto.ResetPassword:
     properties:
       email:
         type: string
@@ -62,7 +62,7 @@ definitions:
     - new_password
     - token
     type: object
-  schemas.UserInsert:
+  dto.UserInsert:
     properties:
       email:
         example: nandarusfikri@gmail.com
@@ -78,7 +78,7 @@ definitions:
     - name
     - password
     type: object
-  schemas.UserUpdate:
+  dto.UserUpdate:
     properties:
       email:
         example: nandarusfikri@gmail.com
@@ -98,7 +98,7 @@ definitions:
     required:
     - id
     type: object
-  schemas.UsersRequest:
+  dto.UsersRequest:
     properties:
       is_active:
         description: |-
@@ -117,7 +117,7 @@ definitions:
       search_text:
         type: string
     type: object
-  schemas.UsersResponse:
+  dto.UsersResponse:
     properties:
       avatar_path:
         type: string
@@ -155,7 +155,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/schemas.ForgotPassword'
+          $ref: '#/definitions/dto.ForgotPassword'
       produces:
       - application/json
       responses:
@@ -178,7 +178,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/schemas.LoginRequest'
+          $ref: '#/definitions/dto.LoginRequest'
       produces:
       - application/json
       responses:
@@ -201,7 +201,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/schemas.ResetPassword'
+          $ref: '#/definitions/dto.ResetPassword'
       produces:
       - application/json
       responses:
@@ -224,7 +224,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/schemas.ProductsRequest'
+          $ref: '#/definitions/dto.ProductsRequest'
       produces:
       - application/json
       responses:
@@ -247,7 +247,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/schemas.UserInsert'
+          $ref: '#/definitions/dto.UserInsert'
       produces:
       - application/json
       responses:
@@ -269,7 +269,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/schemas.UserUpdate'
+          $ref: '#/definitions/dto.UserUpdate'
       produces:
       - application/json
       responses:
@@ -292,7 +292,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/schemas.ChangePassword'
+          $ref: '#/definitions/dto.ChangePassword'
       produces:
       - application/json
       responses:
@@ -315,7 +315,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/schemas.UsersRequest'
+          $ref: '#/definitions/dto.UsersRequest'
       produces:
       - application/json
       responses:
@@ -323,7 +323,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/schemas.UsersResponse'
+              $ref: '#/definitions/dto.UsersResponse'
             type: array
       security:
       - ApiKeyAuth: []

@@ -1,4 +1,4 @@
-package schemas
+package dto
 
 type ProductsRequest struct {
 	SearchText string `form:"search_text" example:"Search name ku"`

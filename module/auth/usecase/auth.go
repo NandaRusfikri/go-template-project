@@ -4,10 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"go-template-project/dto"
 	"go-template-project/module/auth"
 	"go-template-project/module/user"
 	"go-template-project/pkg"
-	"go-template-project/schemas"
 	"go-template-project/util"
 	"os"
 	"time"
@@ -23,21 +23,21 @@ func InitAuthUseCase(auth_repo auth.AuthRepository, user_repo user.UserRepositor
 	return &AuthUseCase{auth_repo: auth_repo, user_repo: user_repo, SMTP: smtp}
 }
 
-func (u *AuthUseCase) Login(input schemas.LoginRequest) (*schemas.LoginResponse, schemas.ResponseError) {
+func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.ResponseError) {
 
 	user, err := u.user_repo.CheckEmail(input.Email)
 
 	CheckPassword := pkg.ComparePassword(user.Password, input.Password)
 	if CheckPassword != nil {
-		return nil, schemas.ResponseError{Error: errors.New("password invalid"), Code: 401}
+		return nil, dto.ResponseError{Error: errors.New("password invalid"), Code: 401}
 	}
 
 	if user.IsActive != nil && !*user.IsActive {
-		return nil, schemas.ResponseError{Error: fmt.Errorf("user not active"), Code: 401}
+		return nil, dto.ResponseError{Error: fmt.Errorf("user not active"), Code: 401}
 	}
 
 	expiredAt := time.Now().Add(time.Hour * time.Duration(1440))
-	claims := schemas.Claims{
+	claims := dto.Claims{
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expiredAt.Unix(),
 		},
@@ -50,10 +50,10 @@ func (u *AuthUseCase) Login(input schemas.LoginRequest) (*schemas.LoginResponse,
 
 	token, ErrorJWT := pkg.Sign(claims, jwtSecretKey)
 	if ErrorJWT != nil {
-		return nil, schemas.ResponseError{Code: 500}
+		return nil, dto.ResponseError{Code: 500}
 	}
 
-	res := schemas.LoginResponse{
+	res := dto.LoginResponse{
 		Id:          user.ID,
 		Name:        user.Name,
 		Email:       user.Email,
@@ -65,29 +65,29 @@ func (u *AuthUseCase) Login(input schemas.LoginRequest) (*schemas.LoginResponse,
 	return &res, err
 }
 
-func (u *AuthUseCase) RequestForgotPassword(input schemas.ForgotPassword) schemas.ResponseError {
+func (u *AuthUseCase) RequestForgotPassword(input dto.ForgotPassword) dto.ResponseError {
 
 	CheckEmail, _ := u.user_repo.CheckEmail(input.Email)
 	if CheckEmail == nil {
-		return schemas.ResponseError{Error: fmt.Errorf("email not found"), Code: 400}
+		return dto.ResponseError{Error: fmt.Errorf("email not found"), Code: 400}
 	}
 	res, err := u.auth_repo.RequestForgotPassword(CheckEmail.ID, util.RandomInt(6))
-	if err != (schemas.ResponseError{}) {
+	if err != (dto.ResponseError{}) {
 		return err
 	}
 
 	message := fmt.Sprintf("Forgot Password Link \n http://disewa.id/nama_web/reset-password/%v/%v", input.Email, res.Token)
 	SendEmail := u.SMTP.SendEmail([]string{input.Email}, []string{}, []string{}, "Forgot Password", "text/plain", message, []string{})
 	if SendEmail != nil {
-		return schemas.ResponseError{
+		return dto.ResponseError{
 			Error: fmt.Errorf("failed send email"),
 			Code:  500,
 		}
 	}
-	return schemas.ResponseError{}
+	return dto.ResponseError{}
 }
 
-func (u *AuthUseCase) ResetPassword(input schemas.ResetPassword) schemas.ResponseError {
+func (u *AuthUseCase) ResetPassword(input dto.ResetPassword) dto.ResponseError {
 
 	err := u.auth_repo.ResetPassword(input)
 	return err
