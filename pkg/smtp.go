@@ -2,49 +2,42 @@ package pkg
 
 import (
 	log "github.com/sirupsen/logrus"
+	"go-template-project/dto"
 	"gopkg.in/gomail.v2"
 )
 
-type SMTPConfig struct {
-	Host     string
-	Port     int
-	Email    string
-	Password string
-	Name     string
-}
-
 type SMTP struct {
-	Config *SMTPConfig
+	Config *dto.SMTPConfig
 }
 
-func InitEmail(config *SMTPConfig) *SMTP {
+func InitEmail(config *dto.SMTPConfig) *SMTP {
 	return &SMTP{
 		Config: config,
 	}
 }
 
-func (e *SMTP) SendEmail(to []string, cc []string, bcc []string, subject string, bodyType string, body string, attachment []string) error {
+func (e *SMTP) SendEmail(params dto.SendEmail) error {
 
 	mailer := gomail.NewMessage()
 	mailer.SetHeader("From", e.Config.Email)
-	mailer.SetHeader("To", to...)
+	mailer.SetHeader("To", params.To...)
 
-	if cc != nil && len(cc) > 0 {
-		mailer.SetHeader("Cc", cc...)
+	if params.Cc != nil && len(params.Cc) > 0 {
+		mailer.SetHeader("Cc", params.Cc...)
 	}
 
-	if bcc != nil && len(bcc) > 0 {
-		mailer.SetHeader("Bcc", bcc...)
+	if params.Bcc != nil && len(params.Bcc) > 0 {
+		mailer.SetHeader("Bcc", params.Bcc...)
 	}
 
-	mailer.SetHeader("Subject", subject)
-	if bodyType == "" {
-		bodyType = "text/html"
+	mailer.SetHeader("Subject", params.Subject)
+	if params.BodyType == "" {
+		params.BodyType = "text/html"
 	}
-	mailer.SetBody(bodyType, body)
+	mailer.SetBody(params.BodyType, params.Body)
 
-	if attachment != nil && len(attachment) > 0 {
-		for _, path := range attachment {
+	if params.Attachment != nil && len(params.Attachment) > 0 {
+		for _, path := range params.Attachment {
 			mailer.Attach(path)
 		}
 	}

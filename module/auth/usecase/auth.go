@@ -77,7 +77,16 @@ func (u *AuthUseCase) RequestForgotPassword(input dto.ForgotPassword) dto.Respon
 	}
 
 	message := fmt.Sprintf("Forgot Password Link \n http://disewa.id/nama_web/reset-password/%v/%v", input.Email, res.Token)
-	SendEmail := u.SMTP.SendEmail([]string{input.Email}, []string{}, []string{}, "Forgot Password", "text/plain", message, []string{})
+
+	SendEmail := u.SMTP.SendEmail(dto.SendEmail{
+		To:         []string{input.Email},
+		Cc:         []string{},
+		Bcc:        []string{},
+		Subject:    "Forgot Password",
+		BodyType:   "text/plain",
+		Body:       message,
+		Attachment: []string{},
+	})
 	if SendEmail != nil {
 		return dto.ResponseError{
 			Error: fmt.Errorf("failed send email"),

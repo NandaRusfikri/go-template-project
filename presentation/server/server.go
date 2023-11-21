@@ -4,6 +4,7 @@ import (
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"go-template-project/database"
+	"go-template-project/dto"
 	auth_controller "go-template-project/module/auth/controller"
 	auth_repo "go-template-project/module/auth/repository"
 	auth_usecase "go-template-project/module/auth/usecase"
@@ -38,7 +39,7 @@ func Start() {
 		log.Errorln("SMTP Port is not valid ", err.Error())
 	}
 
-	smtpClient := pkg.InitEmail(&pkg.SMTPConfig{
+	smtpClient := pkg.InitEmail(&dto.SMTPConfig{
 		Host:     ConfEnv.SMTP_HOST,
 		Port:     SMTPPort,
 		Email:    ConfEnv.SMTP_EMAIL,
