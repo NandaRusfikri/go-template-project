@@ -3,7 +3,7 @@ package dto
 import "time"
 
 type ForgotPassword struct {
-	Email string `json:"email" binding:"required"`
+	Email string `json:"email" binding:"required" example:"nanda@gmail.com"`
 }
 
 type ResetPassword struct {

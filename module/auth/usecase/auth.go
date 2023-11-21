@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"go-template-project/constant"
 	"go-template-project/dto"
 	"go-template-project/module/auth"
 	"go-template-project/module/user"
@@ -36,7 +37,7 @@ func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.Res
 		return nil, dto.ResponseError{Error: fmt.Errorf("user not active"), Code: 401}
 	}
 
-	expiredAt := time.Now().Add(time.Hour * time.Duration(1440))
+	expiredAt := time.Now().Add(time.Hour * time.Duration(constant.DURATION_TOKEN))
 	claims := dto.Claims{
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expiredAt.Unix(),

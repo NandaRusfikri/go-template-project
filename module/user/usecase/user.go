@@ -36,8 +36,6 @@ func (u *UserUseCase) UserInsert(input dto.UserInsert) dto.ResponseError {
 		//Username: input.Username,
 		Email:    input.Email,
 		Password: pkg.HashPassword(input.Password),
-
-		//Status: ""
 	}
 
 	err := u.user_repo.UserInsert(EntityUser)
