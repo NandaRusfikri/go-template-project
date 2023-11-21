@@ -108,7 +108,7 @@ func (r *UserRepository) GetById(id uint64) (*user_entity.EntityUser, dto.Respon
 	return &EntityUser, dto.ResponseError{}
 }
 
-func (r *UserRepository) CreateUser(input user_entity.EntityUser) dto.ResponseError {
+func (r *UserRepository) UserInsert(input user_entity.EntityUser) dto.ResponseError {
 
 	IsActive := true
 	input.IsActive = &IsActive
@@ -145,7 +145,7 @@ func (r *UserRepository) CheckUsername(username string) (*user_entity.EntityUser
 	return &user, dto.ResponseError{}
 }
 
-func (r *UserRepository) UpdateUser(input user_entity.EntityUser) (*user_entity.EntityUser, dto.ResponseError) {
+func (r *UserRepository) UserUpdate(input user_entity.EntityUser) (*user_entity.EntityUser, dto.ResponseError) {
 
 	var entity user_entity.EntityUser
 	Find := r.db.Where("id = ?", input.ID).First(&entity)

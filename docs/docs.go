@@ -79,7 +79,7 @@ const docTemplate = `{
                     "Auth"
                 ],
                 "summary": "Login",
-                "operationId": "User-LoginController",
+                "operationId": "User-Login",
                 "parameters": [
                     {
                         "description": "body data",

@@ -18,8 +18,8 @@ func InitAuthControllerHTTP(route *gin.Engine, auth_usercase auth.AuthUseCase) {
 		auth_usecase: auth_usercase,
 	}
 	groupRoute := route.Group("/api/v1")
-	groupRoute.POST("/auth/login", controller.LoginController)
-	groupRoute.POST("/auth/forgot-password", controller.RequestForgotPassword)
+	groupRoute.POST("/auth/login", controller.Login)
+	groupRoute.POST("/auth/forgot-password", controller.ForgotPassword)
 	groupRoute.POST("/auth/reset-password", controller.ResetPassword)
 }
 
@@ -51,7 +51,7 @@ func (c *AuthControllerHTTP) ResetPassword(ctx *gin.Context) {
 	}
 }
 
-// RequestForgotPassword
+// ForgotPassword
 // @Tags Auth
 // @Summary  Forgot Password
 // @Description  API for Request Forgot Password
@@ -62,7 +62,7 @@ func (c *AuthControllerHTTP) ResetPassword(ctx *gin.Context) {
 // @Param data body dto.ForgotPassword true "body data"
 // @Success 200
 // @Router /v1/auth/forgot-password [post]
-func (c *AuthControllerHTTP) RequestForgotPassword(ctx *gin.Context) {
+func (c *AuthControllerHTTP) ForgotPassword(ctx *gin.Context) {
 
 	var input dto.ForgotPassword
 
@@ -70,7 +70,7 @@ func (c *AuthControllerHTTP) RequestForgotPassword(ctx *gin.Context) {
 		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
 		return
 	}
-	err := c.auth_usecase.RequestForgotPassword(input)
+	err := c.auth_usecase.ForgotPassword(input)
 
 	if err.Error != nil {
 		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
@@ -79,18 +79,18 @@ func (c *AuthControllerHTTP) RequestForgotPassword(ctx *gin.Context) {
 	}
 }
 
-// LoginController
+// Login
 // @Tags Auth
 // @Summary Login
 // @Description API for Login
-// @ID User-LoginController
+// @ID User-Login
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce  json
 // @Param data body dto.LoginRequest true "body data"
 // @Success 200
 // @Router /v1/auth/login [post]
-func (c *AuthControllerHTTP) LoginController(ctx *gin.Context) {
+func (c *AuthControllerHTTP) Login(ctx *gin.Context) {
 
 	var input dto.LoginRequest
 

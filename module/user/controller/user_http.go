@@ -20,7 +20,7 @@ func InitUserControllerHTTP(route *gin.Engine, user_usecase user.UserUseCase) {
 	}
 	groupRoute := route.Group("/api/v1")
 	groupRoute.GET("/users", pkg.Auth, controller.UserList)
-	groupRoute.POST("/user", pkg.Auth, controller.InsertUser)
+	groupRoute.POST("/user", pkg.Auth, controller.UserInsert)
 	groupRoute.PUT("/user", pkg.Auth, controller.UserUpdate)
 	groupRoute.POST("/user/change-password", pkg.Auth, controller.ChangePassword)
 }
@@ -44,7 +44,7 @@ func (c *UserControllerHTTP) ChangePassword(ctx *gin.Context) {
 		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
 		return
 	}
-	err := c.user_usecase.ChangePasswordService(input)
+	err := c.user_usecase.ChangePassword(input)
 
 	if err.Error != nil {
 		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
@@ -72,7 +72,7 @@ func (c *UserControllerHTTP) UserList(ctx *gin.Context) {
 		util.APIResponse(ctx, "Request Invalid", 400, 0, nil)
 		return
 	}
-	res, count, err := c.user_usecase.ListUserService(input)
+	res, count, err := c.user_usecase.UserList(input)
 
 	if err.Error != nil {
 		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
@@ -81,7 +81,7 @@ func (c *UserControllerHTTP) UserList(ctx *gin.Context) {
 	}
 }
 
-// InsertUser
+// UserInsert
 // @Tags User
 // @Summary  User Insert
 // @Description  API untuk menambahkan user baru
@@ -92,7 +92,7 @@ func (c *UserControllerHTTP) UserList(ctx *gin.Context) {
 // @Param data body dto.UserInsert true "body data"
 // @Success 200
 // @Router /v1/user [post]
-func (c *UserControllerHTTP) InsertUser(ctx *gin.Context) {
+func (c *UserControllerHTTP) UserInsert(ctx *gin.Context) {
 
 	var input dto.UserInsert
 
@@ -100,7 +100,7 @@ func (c *UserControllerHTTP) InsertUser(ctx *gin.Context) {
 		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
 		return
 	}
-	err := c.user_usecase.CreateNewUserService(input)
+	err := c.user_usecase.UserInsert(input)
 
 	if err.Error != nil {
 		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
@@ -129,7 +129,7 @@ func (c *UserControllerHTTP) UserUpdate(ctx *gin.Context) {
 		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
 		return
 	}
-	res, err := c.user_usecase.UpdateUserService(input)
+	res, err := c.user_usecase.UserUpdate(input)
 
 	if err.Error != nil {
 		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)

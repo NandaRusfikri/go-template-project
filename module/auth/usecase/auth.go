@@ -65,13 +65,13 @@ func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.Res
 	return &res, err
 }
 
-func (u *AuthUseCase) RequestForgotPassword(input dto.ForgotPassword) dto.ResponseError {
+func (u *AuthUseCase) ForgotPassword(input dto.ForgotPassword) dto.ResponseError {
 
 	CheckEmail, _ := u.user_repo.CheckEmail(input.Email)
 	if CheckEmail == nil {
 		return dto.ResponseError{Error: fmt.Errorf("email not found"), Code: 400}
 	}
-	res, err := u.auth_repo.RequestForgotPassword(CheckEmail.ID, util.RandomInt(6))
+	res, err := u.auth_repo.ForgotPassword(CheckEmail.ID, util.RandomInt(6))
 	if err != (dto.ResponseError{}) {
 		return err
 	}
