@@ -51,7 +51,7 @@ func (r *AuthRepository) ResetPassword(input dto.ResetPassword) dto.ResponseErro
 	if Find.Error != nil {
 		if errors.Is(Find.Error, gorm.ErrRecordNotFound) {
 			log.Errorln("❌ token not found ==> ", Find.Error.Error())
-			return dto.ResponseError{Error: errors.New("token reset passoword not found"), Code: 404}
+			return dto.ResponseError{Error: errors.New("token reset password not found"), Code: 404}
 		}
 		log.Errorln("❌ Error when query to database ==> ", Find.Error.Error())
 		return dto.ResponseError{Error: Find.Error, Code: 500}

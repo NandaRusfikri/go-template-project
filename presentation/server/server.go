@@ -52,8 +52,8 @@ func Start() {
 		log.Fatal(err.Error())
 	}
 
-	httpGin := pkg.SetupGin(ConfEnv)
-	pkg.InitSwagger(httpGin)
+	httpServer := pkg.SetupGin(ConfEnv)
+	pkg.InitSwagger(httpServer)
 
 	AuthRepo := auth_repo.InitAuthRepository(DBPostgres)
 	UserRepo := user_repo.InitUserRepository(DBPostgres)
@@ -62,11 +62,11 @@ func Start() {
 	AuthUseCase := auth_usecase.InitAuthUseCase(AuthRepo, UserRepo, smtpClient)
 	UserUseCase := user_usecase.InitUserUseCase(UserRepo)
 
-	auth_controller.InitAuthControllerHTTP(httpGin, AuthUseCase)
-	user_controller.InitUserControllerHTTP(httpGin, UserUseCase)
-	product_controller.InitProductControllerHTTP(httpGin, ItemUseCase)
-	default_controller.InitDefaultController(httpGin)
+	auth_controller.InitAuthControllerHTTP(httpServer, AuthUseCase)
+	user_controller.InitUserControllerHTTP(httpServer, UserUseCase)
+	product_controller.InitProductControllerHTTP(httpServer, ItemUseCase)
+	default_controller.InitDefaultController(httpServer)
 
-	httpGin.Run(fmt.Sprintf(`:%v`, RESTPort))
+	httpServer.Run(fmt.Sprintf(`:%v`, RESTPort))
 
 }
