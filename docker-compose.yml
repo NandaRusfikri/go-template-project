@@ -9,18 +9,10 @@ services:
     init: true
     ports:
       - "54321:54321"
+    env_file:
+      - .env
     environment:
-      - VERSION=1.0.0
-      - REST_PORT=54321
-      - GO_ENV=production
-      - SWAGGER_HOST=localhost:54321
       - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=nanda
-      - DB_PASS=nanda
-      - DB_NAME=db
-      - DB_SSLMODE=disable
-      - TIMEZONE=Asia/Jakarta
     networks:
       - net-nanda
     depends_on:
