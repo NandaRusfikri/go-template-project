@@ -148,12 +148,12 @@ func (r *UserRepository) CheckUsername(username string) (*user_entity.EntityUser
 func (r *UserRepository) UserUpdate(input user_entity.EntityUser) (*user_entity.EntityUser, dto.ResponseError) {
 
 	var entity user_entity.EntityUser
-	Find := r.db.Where("id = ?", input.ID).First(&entity)
-	if Find.Error != nil {
-		if errors.Is(Find.Error, gorm.ErrRecordNotFound) {
-			return nil, dto.ResponseError{Error: Find.Error, Code: 401}
+	find := r.db.Where("id = ?", input.ID).First(&entity)
+	if find.Error != nil {
+		if errors.Is(find.Error, gorm.ErrRecordNotFound) {
+			return nil, dto.ResponseError{Error: find.Error, Code: 401}
 		}
-		return nil, dto.ResponseError{Error: Find.Error, Code: 500}
+		return nil, dto.ResponseError{Error: find.Error, Code: 500}
 	}
 
 	entity.Name = input.Name
@@ -162,9 +162,9 @@ func (r *UserRepository) UserUpdate(input user_entity.EntityUser) (*user_entity.
 
 	entity.IsActive = input.IsActive
 
-	Update := r.db.Save(&entity)
-	if Update.Error != nil {
-		return nil, dto.ResponseError{Error: Update.Error, Code: 500}
+	update := r.db.Save(&entity)
+	if update.Error != nil {
+		return nil, dto.ResponseError{Error: update.Error, Code: 500}
 	}
 
 	return &entity, dto.ResponseError{}

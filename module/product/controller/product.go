@@ -9,13 +9,13 @@ import (
 )
 
 type ProductControllerHTTP struct {
-	product_usecase product.ProductUseCase
+	productUsecase product.ProductUseCase
 }
 
 func InitProductControllerHTTP(route *gin.Engine, service product.ProductUseCase) {
 
 	controller := &ProductControllerHTTP{
-		product_usecase: service,
+		productUsecase: service,
 	}
 	groupRoute := route.Group("/api/v1")
 	groupRoute.GET("/products", controller.ProductList)
@@ -40,7 +40,7 @@ func (c *ProductControllerHTTP) ProductList(ctx *gin.Context) {
 		util.APIResponse(ctx, "request invalid", 400, 0, nil)
 		return
 	}
-	res, count, err := c.product_usecase.ProductList(input)
+	res, count, err := c.productUsecase.ProductList(input)
 
 	if err.Error != nil {
 		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)

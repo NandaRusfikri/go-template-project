@@ -20,18 +20,18 @@ func InitAuthRepository(db *gorm.DB) *AuthRepository {
 	return &AuthRepository{db: db}
 }
 
-func (r *AuthRepository) ForgotPassword(user_id uint64, token string) (*auth_entity.EntityForgotPassword, dto.ResponseError) {
+func (r *AuthRepository) ForgotPassword(userId uint64, token string) (*auth_entity.EntityForgotPassword, dto.ResponseError) {
 
 	var entity auth_entity.EntityForgotPassword
 	entity.DeletedAt = &gorm.DeletedAt{Valid: true, Time: time.Now()}
-	Delete := r.db.Where("user_id = ?", user_id).Updates(&entity)
+	Delete := r.db.Where("user_id = ?", userId).Updates(&entity)
 	if Delete.Error != nil {
 		log.Errorln("❌ Error when delete to database ==> ", Delete.Error.Error())
 		return nil, dto.ResponseError{Error: Delete.Error, Code: 500}
 	}
 
 	Create := auth_entity.EntityForgotPassword{
-		UserId: user_id,
+		UserId: userId,
 		Token:  token,
 	}
 

@@ -5,16 +5,16 @@ import (
 	log "github.com/sirupsen/logrus"
 	"go-template-project/database"
 	"go-template-project/dto"
-	auth_controller "go-template-project/module/auth/controller"
-	auth_repo "go-template-project/module/auth/repository"
-	auth_usecase "go-template-project/module/auth/usecase"
-	default_controller "go-template-project/module/default/controller"
-	product_controller "go-template-project/module/product/controller"
-	product_repo "go-template-project/module/product/repository"
-	item_usecase "go-template-project/module/product/usecase"
-	user_controller "go-template-project/module/user/controller"
-	user_repo "go-template-project/module/user/repository"
-	user_usecase "go-template-project/module/user/usecase"
+	authcontroller "go-template-project/module/auth/controller"
+	authrepo "go-template-project/module/auth/repository"
+	authusecase "go-template-project/module/auth/usecase"
+	defaultcontroller "go-template-project/module/default/controller"
+	productcontroller "go-template-project/module/product/controller"
+	productrepo "go-template-project/module/product/repository"
+	itemusecase "go-template-project/module/product/usecase"
+	usercontroller "go-template-project/module/user/controller"
+	userrepo "go-template-project/module/user/repository"
+	userusecase "go-template-project/module/user/usecase"
 	"go-template-project/pkg"
 	"strconv"
 )
@@ -55,17 +55,17 @@ func Start() {
 	httpServer := pkg.SetupGin(ConfEnv)
 	pkg.InitSwagger(httpServer)
 
-	AuthRepo := auth_repo.InitAuthRepository(DBPostgres)
-	UserRepo := user_repo.InitUserRepository(DBPostgres)
-	ProductRepo := product_repo.InitProductRepository(DBPostgres)
-	ItemUseCase := item_usecase.InitProductUseCase(ProductRepo)
-	AuthUseCase := auth_usecase.InitAuthUseCase(AuthRepo, UserRepo, smtpClient)
-	UserUseCase := user_usecase.InitUserUseCase(UserRepo)
+	AuthRepo := authrepo.InitAuthRepository(DBPostgres)
+	UserRepo := userrepo.InitUserRepository(DBPostgres)
+	ProductRepo := productrepo.InitProductRepository(DBPostgres)
+	ItemUseCase := itemusecase.InitProductUseCase(ProductRepo)
+	AuthUseCase := authusecase.InitAuthUseCase(AuthRepo, UserRepo, smtpClient)
+	UserUseCase := userusecase.InitUserUseCase(UserRepo)
 
-	auth_controller.InitAuthControllerHTTP(httpServer, AuthUseCase)
-	user_controller.InitUserControllerHTTP(httpServer, UserUseCase)
-	product_controller.InitProductControllerHTTP(httpServer, ItemUseCase)
-	default_controller.InitDefaultController(httpServer)
+	authcontroller.InitAuthControllerHTTP(httpServer, AuthUseCase)
+	usercontroller.InitUserControllerHTTP(httpServer, UserUseCase)
+	productcontroller.InitProductControllerHTTP(httpServer, ItemUseCase)
+	defaultcontroller.InitDefaultController(httpServer)
 
 	httpServer.Run(fmt.Sprintf(`:%v`, RESTPort))
 

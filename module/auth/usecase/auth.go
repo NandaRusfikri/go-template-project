@@ -3,7 +3,7 @@ package usecase
 import (
 	"errors"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 	"go-template-project/constant"
 	"go-template-project/dto"
 	"go-template-project/module/auth"
@@ -15,21 +15,21 @@ import (
 )
 
 type AuthUseCase struct {
-	auth_repo auth.AuthRepository
-	user_repo user.UserRepository
-	SMTP      *pkg.SMTP
+	authRepo auth.AuthRepository
+	userRepo user.UserRepository
+	SMTP     *pkg.SMTP
 }
 
-func InitAuthUseCase(auth_repo auth.AuthRepository, user_repo user.UserRepository, smtp *pkg.SMTP) *AuthUseCase {
-	return &AuthUseCase{auth_repo: auth_repo, user_repo: user_repo, SMTP: smtp}
+func InitAuthUseCase(authRepo auth.AuthRepository, userRepo user.UserRepository, smtp *pkg.SMTP) *AuthUseCase {
+	return &AuthUseCase{authRepo: authRepo, userRepo: userRepo, SMTP: smtp}
 }
 
 func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.ResponseError) {
 
-	user, err := u.user_repo.CheckEmail(input.Email)
+	user, err := u.userRepo.CheckEmail(input.Email)
 
-	CheckPassword := pkg.ComparePassword(user.Password, input.Password)
-	if CheckPassword != nil {
+	checkPassword := pkg.ComparePassword(user.Password, input.Password)
+	if checkPassword != nil {
 		return nil, dto.ResponseError{Error: errors.New("password invalid"), Code: 401}
 	}
 
@@ -39,8 +39,8 @@ func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.Res
 
 	expiredAt := time.Now().Add(time.Hour * time.Duration(constant.DURATION_TOKEN))
 	claims := dto.Claims{
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expiredAt.Unix(),
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(expiredAt),
 		},
 		Id:    user.ID,
 		Name:  user.Name,
@@ -49,8 +49,8 @@ func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.Res
 
 	jwtSecretKey := os.Getenv("JWT_SECRET")
 
-	token, ErrorJWT := pkg.Sign(claims, jwtSecretKey)
-	if ErrorJWT != nil {
+	token, errJWT := pkg.Sign(claims, jwtSecretKey)
+	if errJWT != nil {
 		return nil, dto.ResponseError{Code: 500}
 	}
 
@@ -68,11 +68,11 @@ func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.Res
 
 func (u *AuthUseCase) ForgotPassword(input dto.ForgotPassword) dto.ResponseError {
 
-	CheckEmail, _ := u.user_repo.CheckEmail(input.Email)
-	if CheckEmail == nil {
+	checkEmail, _ := u.userRepo.CheckEmail(input.Email)
+	if checkEmail == nil {
 		return dto.ResponseError{Error: fmt.Errorf("email not found"), Code: 400}
 	}
-	res, err := u.auth_repo.ForgotPassword(CheckEmail.ID, util.RandomInt(6))
+	res, err := u.authRepo.ForgotPassword(checkEmail.ID, util.RandomInt(6))
 	if err != (dto.ResponseError{}) {
 		return err
 	}
@@ -99,6 +99,6 @@ func (u *AuthUseCase) ForgotPassword(input dto.ForgotPassword) dto.ResponseError
 
 func (u *AuthUseCase) ResetPassword(input dto.ResetPassword) dto.ResponseError {
 
-	err := u.auth_repo.ResetPassword(input)
+	err := u.authRepo.ResetPassword(input)
 	return err
 }

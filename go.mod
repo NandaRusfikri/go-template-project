@@ -8,6 +8,7 @@ require (
 	github.com/gin-contrib/gzip v0.0.6
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/golang-jwt/jwt/v5 v5.1.0
 	github.com/joho/godotenv v1.4.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/swaggo/files v1.0.1

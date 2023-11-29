@@ -1,11 +1,11 @@
 package dto
 
 import (
-	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type Claims struct {
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 	Id       uint64 `json:"id"`
 	Email    string `json:"email"`
 	Name     string `json:"name"`
