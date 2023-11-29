@@ -10,10 +10,10 @@ import (
 )
 
 type UserControllerHTTP struct {
-	user_usecase user.UserUseCase
+	user_usecase user.UseCase
 }
 
-func InitUserControllerHTTP(route *gin.Engine, user_usecase user.UserUseCase) {
+func InitUserControllerHTTP(route *gin.Engine, user_usecase user.UseCase) {
 
 	controller := &UserControllerHTTP{
 		user_usecase: user_usecase,

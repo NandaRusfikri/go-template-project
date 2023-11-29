@@ -20,9 +20,9 @@ func InitAuthRepository(db *gorm.DB) *AuthRepository {
 	return &AuthRepository{db: db}
 }
 
-func (r *AuthRepository) ForgotPassword(userId uint64, token string) (*auth_entity.EntityForgotPassword, dto.ResponseError) {
+func (r *AuthRepository) ForgotPassword(userId uint64, token string) (*auth_entity.ForgotPassword, dto.ResponseError) {
 
-	var entity auth_entity.EntityForgotPassword
+	var entity auth_entity.ForgotPassword
 	entity.DeletedAt = &gorm.DeletedAt{Valid: true, Time: time.Now()}
 	Delete := r.db.Where("user_id = ?", userId).Updates(&entity)
 	if Delete.Error != nil {
@@ -30,7 +30,7 @@ func (r *AuthRepository) ForgotPassword(userId uint64, token string) (*auth_enti
 		return nil, dto.ResponseError{Error: Delete.Error, Code: 500}
 	}
 
-	Create := auth_entity.EntityForgotPassword{
+	Create := auth_entity.ForgotPassword{
 		UserId: userId,
 		Token:  token,
 	}
@@ -46,7 +46,7 @@ func (r *AuthRepository) ForgotPassword(userId uint64, token string) (*auth_enti
 
 func (r *AuthRepository) ResetPassword(input dto.ResetPassword) dto.ResponseError {
 
-	var entity auth_entity.EntityForgotPassword
+	var entity auth_entity.ForgotPassword
 	Find := r.db.Where("token = ?", input.Token).First(&entity)
 	if Find.Error != nil {
 		if errors.Is(Find.Error, gorm.ErrRecordNotFound) {
@@ -57,7 +57,7 @@ func (r *AuthRepository) ResetPassword(input dto.ResetPassword) dto.ResponseErro
 		return dto.ResponseError{Error: Find.Error, Code: 500}
 	}
 
-	var user user_entity.EntityUser
+	var user user_entity.User
 	FindUser := r.db.Where("id = ?", entity.UserId).Where("email = ?", input.Email).First(&user)
 	if FindUser.Error != nil {
 		if errors.Is(FindUser.Error, gorm.ErrRecordNotFound) {

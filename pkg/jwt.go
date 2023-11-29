@@ -1,7 +1,6 @@
 package pkg
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
@@ -86,7 +85,7 @@ func Auth(ctx *gin.Context) {
 	Scret := os.Getenv("JWT_SECRET")
 	_, err := jwt.Parse(tokenHeader, func(token *jwt.Token) (interface{}, error) {
 		if jwt.GetSigningMethod("HS256") != token.Method {
-			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 
 		return []byte(Scret), nil
@@ -119,10 +118,10 @@ func VerifyToken(accessToken, SecrePublicKeyEnvName string) (*jwt.Token, error) 
 	return token, nil
 }
 
-func DecodeToken(accessToken *jwt.Token) AccessToken {
-	var token AccessToken
-	stringify, _ := json.Marshal(&accessToken)
-	json.Unmarshal([]byte(stringify), &token)
-
-	return token
-}
+//func DecodeToken(accessToken *jwt.Token) AccessToken {
+//	var token AccessToken
+//	stringify, _ := json.Marshal(&accessToken)
+//	json.Unmarshal(stringify, &token)
+//
+//	return token
+//}

@@ -20,10 +20,10 @@ func (r *AuthRepositoryMock) ResetPassword(input dto.ResetPassword) dto.Response
 	}
 }
 
-func (r *AuthRepositoryMock) ForgotPassword(userId uint64, token string) (*authentity.EntityForgotPassword, dto.ResponseError) {
+func (r *AuthRepositoryMock) ForgotPassword(userId uint64, token string) (*authentity.ForgotPassword, dto.ResponseError) {
 	args := r.Mock.Called(userId, token)
 	if args.Get(0) != nil {
-		return args.Get(0).(*authentity.EntityForgotPassword), args.Get(1).(dto.ResponseError)
+		return args.Get(0).(*authentity.ForgotPassword), args.Get(1).(dto.ResponseError)
 	}
 	return nil, dto.ResponseError{Code: 500, Error: errors.New("unexpected error")}
 }

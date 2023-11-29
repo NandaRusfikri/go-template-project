@@ -15,36 +15,36 @@ import (
 )
 
 type AuthUseCase struct {
-	authRepo auth.AuthRepository
-	userRepo user.UserRepository
+	authRepo auth.Repository
+	userRepo user.Repository
 	SMTP     *pkg.SMTP
 }
 
-func InitAuthUseCase(authRepo auth.AuthRepository, userRepo user.UserRepository, smtp *pkg.SMTP) *AuthUseCase {
+func InitAuthUseCase(authRepo auth.Repository, userRepo user.Repository, smtp *pkg.SMTP) *AuthUseCase {
 	return &AuthUseCase{authRepo: authRepo, userRepo: userRepo, SMTP: smtp}
 }
 
 func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.ResponseError) {
 
-	user, err := u.userRepo.CheckEmail(input.Email)
+	entityUser, err := u.userRepo.CheckEmail(input.Email)
 
-	checkPassword := pkg.ComparePassword(user.Password, input.Password)
+	checkPassword := pkg.ComparePassword(entityUser.Password, input.Password)
 	if checkPassword != nil {
 		return nil, dto.ResponseError{Error: errors.New("password invalid"), Code: 401}
 	}
 
-	if user.IsActive != nil && !*user.IsActive {
-		return nil, dto.ResponseError{Error: fmt.Errorf("user not active"), Code: 401}
+	if entityUser.IsActive != nil && !*entityUser.IsActive {
+		return nil, dto.ResponseError{Error: fmt.Errorf("entityUser not active"), Code: 401}
 	}
 
 	expiredAt := time.Now().Add(time.Hour * time.Duration(constant.DURATION_TOKEN))
 	claims := dto.Claims{
-		Claims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(expiredAt),
-		},
-		Id:    user.ID,
-		Name:  user.Name,
-		Email: user.Email,
+		Id:    entityUser.ID,
+		Name:  entityUser.Name,
+		Email: entityUser.Email,
+	}
+	claims.RegisteredClaims = jwt.RegisteredClaims{
+		ExpiresAt: jwt.NewNumericDate(expiredAt),
 	}
 
 	jwtSecretKey := os.Getenv("JWT_SECRET")
@@ -55,10 +55,10 @@ func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.Res
 	}
 
 	res := dto.LoginResponse{
-		Id:          user.ID,
-		Name:        user.Name,
-		Email:       user.Email,
-		AvatarPath:  user.AvatarPath,
+		Id:          entityUser.ID,
+		Name:        entityUser.Name,
+		Email:       entityUser.Email,
+		AvatarPath:  entityUser.AvatarPath,
 		AccessToken: token,
 		ExpiredAt:   expiredAt,
 	}
@@ -77,7 +77,7 @@ func (u *AuthUseCase) ForgotPassword(input dto.ForgotPassword) dto.ResponseError
 		return err
 	}
 
-	message := fmt.Sprintf("Forgot Password Link \n http://disewa.id/nama_web/reset-password/%v/%v", input.Email, res.Token)
+	message := fmt.Sprintf("Forgot Password Link \n https://disewa.id/nama_web/reset-password/%v/%v", input.Email, res.Token)
 
 	SendEmail := u.SMTP.SendEmail(dto.SendEmail{
 		To:         []string{input.Email},

@@ -9,10 +9,10 @@ import (
 )
 
 type ProductControllerHTTP struct {
-	productUsecase product.ProductUseCase
+	productUsecase product.UseCase
 }
 
-func InitProductControllerHTTP(route *gin.Engine, service product.ProductUseCase) {
+func InitProductControllerHTTP(route *gin.Engine, service product.UseCase) {
 
 	controller := &ProductControllerHTTP{
 		productUsecase: service,

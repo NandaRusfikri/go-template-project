@@ -10,11 +10,11 @@ import (
 )
 
 type UserUseCase struct {
-	userRepo user.UserRepository
+	userRepo user.Repository
 	SMTP     *pkg.SMTP
 }
 
-func InitUserUseCase(repository user.UserRepository) *UserUseCase {
+func InitUserUseCase(repository user.Repository) *UserUseCase {
 	return &UserUseCase{userRepo: repository}
 }
 
@@ -31,7 +31,7 @@ func (u *UserUseCase) UserInsert(input dto.UserInsert) dto.ResponseError {
 		return dto.ResponseError{Error: fmt.Errorf("email already exist"), Code: 400}
 	}
 
-	EntityUser := userEntity.EntityUser{
+	EntityUser := userEntity.User{
 		Name: input.Name,
 		//Username: input.Username,
 		Email:    input.Email,
@@ -44,9 +44,9 @@ func (u *UserUseCase) UserInsert(input dto.UserInsert) dto.ResponseError {
 
 }
 
-func (u *UserUseCase) UserUpdate(input dto.UserUpdate) (*userEntity.EntityUser, dto.ResponseError) {
+func (u *UserUseCase) UserUpdate(input dto.UserUpdate) (*userEntity.User, dto.ResponseError) {
 
-	entity := userEntity.EntityUser{
+	entity := userEntity.User{
 		ID:    input.Id,
 		Name:  input.Name,
 		Email: input.Email,

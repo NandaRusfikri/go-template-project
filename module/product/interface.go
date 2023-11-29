@@ -5,11 +5,11 @@ import (
 	"go-template-project/module/product/entity"
 )
 
-type ProductRepository interface {
+type Repository interface {
 	ProductList(input dto.ProductsRequest) ([]*entity.MSProduct, int64, dto.ResponseError)
 	GetIds(ids []uint64) ([]uint64, dto.ResponseError)
 }
 
-type ProductUseCase interface {
+type UseCase interface {
 	ProductList(input dto.ProductsRequest) ([]*entity.MSProduct, int64, dto.ResponseError)
 }

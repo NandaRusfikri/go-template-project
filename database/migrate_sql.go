@@ -11,8 +11,8 @@ import (
 
 func MigrateDBSQL(db *gorm.DB) error {
 	err := db.AutoMigrate(
-		&userentity.EntityUser{},
-		&authentity.EntityForgotPassword{},
+		&userentity.User{},
+		&authentity.ForgotPassword{},
 		&productentity.MSProduct{},
 	)
 
@@ -20,15 +20,15 @@ func MigrateDBSQL(db *gorm.DB) error {
 		log.Errorln("❌ Error Migrate ", err.Error())
 		return err
 	}
-	if data := db.Find(&userentity.EntityUser{}); data.RowsAffected < 1 {
+	if data := db.Find(&userentity.User{}); data.RowsAffected < 1 {
 
-		UserAdmin := userentity.EntityUser{
+		UserAdmin := userentity.User{
 			Name:     "Super Admin",
 			Email:    "super.admin@gmail.com",
 			Password: pkg.HashPassword("12345678"),
 		}
 
-		UserAri := userentity.EntityUser{
+		UserAri := userentity.User{
 			Name:     "Malik",
 			Email:    "malik@gmail.id",
 			Password: pkg.HashPassword("12345678"),

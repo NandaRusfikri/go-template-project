@@ -9,13 +9,13 @@ import (
 )
 
 type AuthControllerHTTP struct {
-	auth_usecase auth.AuthUseCase
+	authUsecase auth.UseCase
 }
 
-func InitAuthControllerHTTP(route *gin.Engine, auth_usercase auth.AuthUseCase) {
+func InitAuthControllerHTTP(route *gin.Engine, authUsecase auth.UseCase) {
 
 	controller := &AuthControllerHTTP{
-		auth_usecase: auth_usercase,
+		authUsecase: authUsecase,
 	}
 	groupRoute := route.Group("/api/v1")
 	groupRoute.POST("/auth/login", controller.Login)
@@ -42,7 +42,7 @@ func (c *AuthControllerHTTP) ResetPassword(ctx *gin.Context) {
 		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
 		return
 	}
-	err := c.auth_usecase.ResetPassword(input)
+	err := c.authUsecase.ResetPassword(input)
 
 	if err.Error != nil {
 		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
@@ -70,7 +70,7 @@ func (c *AuthControllerHTTP) ForgotPassword(ctx *gin.Context) {
 		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
 		return
 	}
-	err := c.auth_usecase.ForgotPassword(input)
+	err := c.authUsecase.ForgotPassword(input)
 
 	if err.Error != nil {
 		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
@@ -98,7 +98,7 @@ func (c *AuthControllerHTTP) Login(ctx *gin.Context) {
 		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
 		return
 	}
-	res, err := c.auth_usecase.Login(input)
+	res, err := c.authUsecase.Login(input)
 
 	if err.Error != nil {
 		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)

@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This Project Template Go which i usually use.",
+        "description": "This Project Template Go which I usually use.",
         "title": "go-template-project",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
@@ -71,7 +71,7 @@
                     "Auth"
                 ],
                 "summary": "Login",
-                "operationId": "User-LoginController",
+                "operationId": "User-Login",
                 "parameters": [
                     {
                         "description": "body data",
@@ -347,7 +347,8 @@
             ],
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "nanda@gmail.com"
                 }
             }
         },

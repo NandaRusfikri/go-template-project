@@ -16,7 +16,7 @@ type ProductRepository struct {
 	db *gorm.DB
 }
 
-func InitProductRepository(dbCon *gorm.DB) product.ProductRepository {
+func InitProductRepository(dbCon *gorm.DB) product.Repository {
 	return &ProductRepository{
 		db: dbCon,
 	}
@@ -100,7 +100,7 @@ func (r *ProductRepository) ProductInsert(input entity.MSProduct) dto.ResponseEr
 		return dto.ResponseError{Error: Create.Error, Code: 500}
 	}
 	if Create.RowsAffected < 1 {
-		return dto.ResponseError{Error: fmt.Errorf("Error Insert"), Code: 500}
+		return dto.ResponseError{Error: fmt.Errorf("error Insert"), Code: 500}
 	}
 
 	return dto.ResponseError{}

@@ -18,7 +18,7 @@ func InitSwagger(httpGin *gin.Engine) {
 
 	// @title go-template-project
 	// @version 1.0
-	// @description This Project Template Go which i usually use.
+	// @description This Project Template Go which I usually use.
 	// @termsOfService http://swagger.io/terms/
 
 	// @contact.name API Support

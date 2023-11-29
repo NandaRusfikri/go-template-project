@@ -67,6 +67,9 @@ func Start() {
 	productcontroller.InitProductControllerHTTP(httpServer, ItemUseCase)
 	defaultcontroller.InitDefaultController(httpServer)
 
-	httpServer.Run(fmt.Sprintf(`:%v`, RESTPort))
+	err = httpServer.Run(fmt.Sprintf(`:%v`, RESTPort))
+	if err != nil {
+		panic(err)
+	}
 
 }

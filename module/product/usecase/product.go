@@ -7,10 +7,10 @@ import (
 )
 
 type ProductUseCase struct {
-	productRepo product.ProductRepository
+	productRepo product.Repository
 }
 
-func InitProductUseCase(repo product.ProductRepository) *ProductUseCase {
+func InitProductUseCase(repo product.Repository) *ProductUseCase {
 	return &ProductUseCase{
 		productRepo: repo,
 	}

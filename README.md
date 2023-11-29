@@ -128,7 +128,7 @@ You should be able to access the API at http://localhost:54321/swagger/index.htm
 - #### Repositorys
 
 | **Folder Name** | **Description**                                                                                                    |
-| --------------- |--------------------------------------------------------------------------------------------------------------------|
+|-----------------|--------------------------------------------------------------------------------------------------------------------|
 | *Repositorys*   | *Kumpulan fungsi yang digunakan untuk mengambil atau mengirim data. sumber nya bisa dari database, Rest API  dll * | 
 
 - #### Use Case

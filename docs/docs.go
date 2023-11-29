@@ -355,7 +355,8 @@ const docTemplate = `{
             ],
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "nanda@gmail.com"
                 }
             }
         },
@@ -528,7 +529,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "go-template-project",
-	Description:      "This Project Template Go which i usually use.",
+	Description:      "This Project Template Go which I usually use.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
