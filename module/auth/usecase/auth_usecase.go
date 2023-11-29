@@ -39,7 +39,7 @@ func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.Res
 
 	expiredAt := time.Now().Add(time.Hour * time.Duration(constant.DURATION_TOKEN))
 	claims := dto.Claims{
-		RegisteredClaims: jwt.RegisteredClaims{
+		Claims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expiredAt),
 		},
 		Id:    user.ID,
