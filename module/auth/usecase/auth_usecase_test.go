@@ -11,7 +11,7 @@ import (
 var authRepository = &repository.AuthRepositoryMock{
 	Mock: mock.Mock{},
 }
-var authUseCase = AuthUseCase{
+var authUseCase = authUseCase{
 	authRepo: authRepository,
 }
 

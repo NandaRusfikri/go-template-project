@@ -1,23 +1,23 @@
 package dto
 
 type ConfigEnvironment struct {
-	DB_USER    string
-	DB_PASS    string
-	DB_HOST    string
-	DB_PORT    string
-	DB_NAME    string
-	DB_SSLMODE string
+	DbUser    string
+	DbPass    string
+	DbHost    string
+	DbPort    string
+	DbName    string
+	DbSslmode string
 
-	SMTP_HOST     string
-	SMTP_PORT     string
-	SMTP_EMAIL    string
-	SMTP_PASSWORD string
-	SMTP_NAME     string
+	SmtpHost     string
+	SmtpPort     string
+	SmtpEmail    string
+	SmtpPassword string
+	SmtpName     string
 
-	TIMEZONE     string
-	VERSION      string
-	REST_PORT    string
-	GO_ENV       string
-	SWAGGER_HOST string
-	JWT_SECRET   string
+	Timezone    string
+	Version     string
+	RestPort    string
+	GoEnv       string
+	SwaggerHost string
+	JwtSecret   string
 }

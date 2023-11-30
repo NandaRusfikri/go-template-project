@@ -82,13 +82,13 @@ func Auth(ctx *gin.Context) {
 	//	ctx.Abort()
 	//}
 
-	Scret := os.Getenv("JWT_SECRET")
+	Secret := os.Getenv("JWT_SECRET")
 	_, err := jwt.Parse(tokenHeader, func(token *jwt.Token) (interface{}, error) {
 		if jwt.GetSigningMethod("HS256") != token.Method {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 
-		return []byte(Scret), nil
+		return []byte(Secret), nil
 	})
 
 	if err != nil {
@@ -103,8 +103,8 @@ func Auth(ctx *gin.Context) {
 
 }
 
-func VerifyToken(accessToken, SecrePublicKeyEnvName string) (*jwt.Token, error) {
-	jwtSecretKey := os.Getenv(SecrePublicKeyEnvName)
+func VerifyToken(accessToken, SecretPublicKeyEnvName string) (*jwt.Token, error) {
+	jwtSecretKey := os.Getenv(SecretPublicKeyEnvName)
 
 	token, err := jwt.Parse(accessToken, func(token *jwt.Token) (interface{}, error) {
 		return []byte(jwtSecretKey), nil

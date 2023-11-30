@@ -153,7 +153,7 @@ const docTemplate = `{
                     "Product"
                 ],
                 "summary": "Product List",
-                "operationId": "Item-ProductList",
+                "operationId": "Item-GetList",
                 "parameters": [
                     {
                         "description": "body data",
@@ -190,7 +190,7 @@ const docTemplate = `{
                     "User"
                 ],
                 "summary": "User Update",
-                "operationId": "User-UserUpdate",
+                "operationId": "User-Update",
                 "parameters": [
                     {
                         "description": "body data",
@@ -198,7 +198,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.UserUpdate"
+                            "$ref": "#/definitions/dto.Update"
                         }
                     }
                 ],
@@ -225,7 +225,7 @@ const docTemplate = `{
                     "User"
                 ],
                 "summary": "User Insert",
-                "operationId": "User-UserInsert",
+                "operationId": "User-Insert",
                 "parameters": [
                     {
                         "description": "body data",
@@ -233,7 +233,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.UserInsert"
+                            "$ref": "#/definitions/dto.Insert"
                         }
                     }
                 ],
@@ -299,7 +299,7 @@ const docTemplate = `{
                     "User"
                 ],
                 "summary": "User List",
-                "operationId": "User-UserList",
+                "operationId": "User-GetList",
                 "parameters": [
                     {
                         "description": "body data",
@@ -417,7 +417,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.UserInsert": {
+        "dto.Insert": {
             "type": "object",
             "required": [
                 "email",
@@ -439,7 +439,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.UserUpdate": {
+        "dto.Update": {
             "type": "object",
             "required": [
                 "id"

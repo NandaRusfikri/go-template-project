@@ -9,10 +9,10 @@ import (
 )
 
 type AuthControllerHTTP struct {
-	authUsecase auth.UseCase
+	authUsecase auth.UseCaseInterface
 }
 
-func InitAuthControllerHTTP(route *gin.Engine, authUsecase auth.UseCase) {
+func InitAuthControllerHTTP(route *gin.Engine, authUsecase auth.UseCaseInterface) {
 
 	controller := &AuthControllerHTTP{
 		authUsecase: authUsecase,

@@ -10,41 +10,38 @@ import (
 )
 
 type UserUseCase struct {
-	userRepo user.Repository
+	userRepo user.RepositoryInterface
 	SMTP     *pkg.SMTP
 }
 
-func InitUserUseCase(repository user.Repository) *UserUseCase {
+func InitUserUseCase(repository user.RepositoryInterface) *UserUseCase {
 	return &UserUseCase{userRepo: repository}
 }
 
-func (u *UserUseCase) UserList(input dto.UsersRequest) ([]*dto.UsersResponse, int64, dto.ResponseError) {
-
-	res, count, err := u.userRepo.UserList(input)
-	return res, count, err
+func (u *UserUseCase) GetList(input dto.UsersRequest) ([]*dto.UsersResponse, int64, dto.ResponseError) {
+	return u.userRepo.GetList(input)
 }
 
-func (u *UserUseCase) UserInsert(input dto.UserInsert) dto.ResponseError {
+func (u *UserUseCase) Insert(input dto.UserInsert) dto.ResponseError {
 
-	CheckEmail, _ := u.userRepo.CheckEmail(input.Email)
-	if CheckEmail != nil {
+	GetByEmail, _ := u.userRepo.FindByEmail(input.Email)
+	if GetByEmail != nil {
 		return dto.ResponseError{Error: fmt.Errorf("email already exist"), Code: 400}
 	}
 
 	EntityUser := userEntity.User{
-		Name: input.Name,
-		//Username: input.Username,
+		Name:     input.Name,
 		Email:    input.Email,
 		Password: pkg.HashPassword(input.Password),
 	}
 
-	err := u.userRepo.UserInsert(EntityUser)
+	err := u.userRepo.Insert(EntityUser)
 
 	return err
 
 }
 
-func (u *UserUseCase) UserUpdate(input dto.UserUpdate) (*userEntity.User, dto.ResponseError) {
+func (u *UserUseCase) Update(input dto.UserUpdate) (*userEntity.User, dto.ResponseError) {
 
 	entity := userEntity.User{
 		ID:    input.Id,
@@ -57,13 +54,13 @@ func (u *UserUseCase) UserUpdate(input dto.UserUpdate) (*userEntity.User, dto.Re
 		entity.IsActive = input.IsActive
 	}
 
-	res, err := u.userRepo.UserUpdate(entity)
+	res, err := u.userRepo.Update(entity)
 	return res, err
 }
 
 func (u *UserUseCase) ChangePassword(input dto.ChangePassword) dto.ResponseError {
 
-	DataUser, err := u.userRepo.GetById(input.UserId)
+	DataUser, err := u.userRepo.FindById(input.UserId)
 	if err.Error != nil {
 		return dto.ResponseError{Code: 404, Error: errors.New("user not found")}
 	}

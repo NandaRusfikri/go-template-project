@@ -15,18 +15,18 @@ import (
 )
 
 type AuthUseCase struct {
-	authRepo auth.Repository
-	userRepo user.Repository
+	authRepo auth.RepositoryInterface
+	userRepo user.RepositoryInterface
 	SMTP     *pkg.SMTP
 }
 
-func InitAuthUseCase(authRepo auth.Repository, userRepo user.Repository, smtp *pkg.SMTP) *AuthUseCase {
+func InitAuthUseCase(authRepo auth.RepositoryInterface, userRepo user.RepositoryInterface, smtp *pkg.SMTP) *AuthUseCase {
 	return &AuthUseCase{authRepo: authRepo, userRepo: userRepo, SMTP: smtp}
 }
 
 func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.ResponseError) {
 
-	entityUser, err := u.userRepo.CheckEmail(input.Email)
+	entityUser, err := u.userRepo.FindByEmail(input.Email)
 
 	checkPassword := pkg.ComparePassword(entityUser.Password, input.Password)
 	if checkPassword != nil {
@@ -68,7 +68,7 @@ func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.Res
 
 func (u *AuthUseCase) ForgotPassword(input dto.ForgotPassword) dto.ResponseError {
 
-	checkEmail, _ := u.userRepo.CheckEmail(input.Email)
+	checkEmail, _ := u.userRepo.FindByEmail(input.Email)
 	if checkEmail == nil {
 		return dto.ResponseError{Error: fmt.Errorf("email not found"), Code: 400}
 	}

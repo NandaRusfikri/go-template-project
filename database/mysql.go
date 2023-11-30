@@ -10,12 +10,12 @@ import (
 
 func SetupDBMysql(config dto.ConfigEnvironment) (*gorm.DB, error) {
 	logrus.Debug("🔌 Connecting to Database")
-	dbUsername := config.DB_USER
-	dbPassword := config.DB_PASS
-	dbName := config.DB_NAME
-	dbHost := config.DB_HOST
-	dbPort := config.DB_PORT
-	//timezone := config.TIMEZONE
+	dbUsername := config.DbUser
+	dbPassword := config.DbPass
+	dbName := config.DbName
+	dbHost := config.DbHost
+	dbPort := config.DbPort
+	//timezone := config.Timezone
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		dbUsername, dbPassword, dbHost, dbPort, dbName)

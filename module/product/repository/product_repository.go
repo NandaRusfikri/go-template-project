@@ -16,7 +16,7 @@ type ProductRepository struct {
 	db *gorm.DB
 }
 
-func InitProductRepository(dbCon *gorm.DB) product.Repository {
+func InitProductRepository(dbCon *gorm.DB) product.RepositoryInterface {
 	return &ProductRepository{
 		db: dbCon,
 	}
@@ -38,7 +38,7 @@ func (r *ProductRepository) GetIds(ids []uint64) ([]uint64, dto.ResponseError) {
 
 }
 
-func (r *ProductRepository) ProductList(input dto.ProductsRequest) ([]*entity.MSProduct, int64, dto.ResponseError) {
+func (r *ProductRepository) GetList(input dto.ProductsRequest) ([]*entity.MSProduct, int64, dto.ResponseError) {
 
 	var ListItem []*entity.MSProduct
 

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"go-template-project/constant"
 	"go-template-project/dto"
-	user_entity "go-template-project/module/user/entity"
+	userEntity "go-template-project/module/user/entity"
 	"go-template-project/util"
 	"gorm.io/gorm"
 	"strings"
@@ -19,10 +19,10 @@ func InitUserRepository(db *gorm.DB) *UserRepository {
 	return &UserRepository{db: db}
 }
 
-func (r *UserRepository) UserList(input dto.UsersRequest) ([]*dto.UsersResponse, int64, dto.ResponseError) {
-	var ListEntityUser []*user_entity.User
+func (r *UserRepository) GetList(input dto.UsersRequest) ([]*dto.UsersResponse, int64, dto.ResponseError) {
+	var ListEntityUser []*userEntity.User
 
-	db := r.db.Debug().Model(&user_entity.User{})
+	db := r.db.Debug().Model(&userEntity.User{})
 
 	if input.SearchText != "" {
 		search := "%" + strings.ToLower(input.SearchText) + "%"
@@ -36,7 +36,7 @@ func (r *UserRepository) UserList(input dto.UsersRequest) ([]*dto.UsersResponse,
 
 	var count int64
 
-	dbCount := db.Table(constant.TABLE_MS_USER).Model(user_entity.User{}).Count(&count)
+	dbCount := db.Table(constant.TABLE_MS_USER).Model(userEntity.User{}).Count(&count)
 	if dbCount.Error != nil && !errors.Is(dbCount.Error, gorm.ErrRecordNotFound) {
 		return nil, 0, dto.ResponseError{Error: dbCount.Error, Code: 500}
 	}
@@ -91,8 +91,8 @@ func (r *UserRepository) UserList(input dto.UsersRequest) ([]*dto.UsersResponse,
 	return ListSchemaUser, count, dto.ResponseError{}
 }
 
-func (r *UserRepository) GetById(id uint64) (*user_entity.User, dto.ResponseError) {
-	EntityUser := user_entity.User{}
+func (r *UserRepository) FindById(id uint64) (*userEntity.User, dto.ResponseError) {
+	EntityUser := userEntity.User{}
 
 	db := r.db.Where("id = ?", id)
 
@@ -108,7 +108,7 @@ func (r *UserRepository) GetById(id uint64) (*user_entity.User, dto.ResponseErro
 	return &EntityUser, dto.ResponseError{}
 }
 
-func (r *UserRepository) UserInsert(input user_entity.User) dto.ResponseError {
+func (r *UserRepository) Insert(input userEntity.User) dto.ResponseError {
 
 	IsActive := true
 	input.IsActive = &IsActive
@@ -124,9 +124,9 @@ func (r *UserRepository) UserInsert(input user_entity.User) dto.ResponseError {
 
 }
 
-func (r *UserRepository) CheckEmail(email string) (*user_entity.User, dto.ResponseError) {
+func (r *UserRepository) FindByEmail(email string) (*userEntity.User, dto.ResponseError) {
 
-	var user user_entity.User
+	var user userEntity.User
 	CheckEmail := r.db.Debug().Where("email = ?", email).First(&user)
 	if CheckEmail.Error != nil {
 		return nil, dto.ResponseError{Error: CheckEmail.Error, Code: 404}
@@ -135,8 +135,8 @@ func (r *UserRepository) CheckEmail(email string) (*user_entity.User, dto.Respon
 	return &user, dto.ResponseError{}
 }
 
-func (r *UserRepository) CheckUsername(username string) (*user_entity.User, dto.ResponseError) {
-	var user user_entity.User
+func (r *UserRepository) FindByUsername(username string) (*userEntity.User, dto.ResponseError) {
+	var user userEntity.User
 	CheckUsername := r.db.Where("username = ?", username).First(&user)
 	if CheckUsername.Error != nil {
 		return nil, dto.ResponseError{Error: CheckUsername.Error, Code: 404}
@@ -145,9 +145,9 @@ func (r *UserRepository) CheckUsername(username string) (*user_entity.User, dto.
 	return &user, dto.ResponseError{}
 }
 
-func (r *UserRepository) UserUpdate(input user_entity.User) (*user_entity.User, dto.ResponseError) {
+func (r *UserRepository) Update(input userEntity.User) (*userEntity.User, dto.ResponseError) {
 
-	var entity user_entity.User
+	var entity userEntity.User
 	find := r.db.Where("id = ?", input.ID).First(&entity)
 	if find.Error != nil {
 		if errors.Is(find.Error, gorm.ErrRecordNotFound) {
@@ -170,11 +170,11 @@ func (r *UserRepository) UserUpdate(input user_entity.User) (*user_entity.User, 
 	return &entity, dto.ResponseError{}
 }
 
-func (r *UserRepository) ChangePassword(user_id uint64, new_password string) dto.ResponseError {
+func (r *UserRepository) ChangePassword(userId uint64, newPassword string) dto.ResponseError {
 
-	entity := user_entity.User{
-		ID:       user_id,
-		Password: new_password,
+	entity := userEntity.User{
+		ID:       userId,
+		Password: newPassword,
 	}
 
 	Update := r.db.Updates(&entity)

@@ -22,7 +22,7 @@ import (
 func Start() {
 
 	ConfEnv := pkg.LoadEnvironment(".env")
-	RESTPort, err := strconv.Atoi(ConfEnv.REST_PORT)
+	RESTPort, err := strconv.Atoi(ConfEnv.RestPort)
 	if err != nil {
 		log.Errorln("REST_PORT is not valid ", err.Error())
 	}
@@ -34,17 +34,17 @@ func Start() {
 	//	return
 	//}
 
-	SMTPPort, err := strconv.Atoi(ConfEnv.SMTP_PORT)
+	SMTPPort, err := strconv.Atoi(ConfEnv.SmtpPort)
 	if err != nil {
 		log.Errorln("SMTP Port is not valid ", err.Error())
 	}
 
 	smtpClient := pkg.InitEmail(&dto.SMTPConfig{
-		Host:     ConfEnv.SMTP_HOST,
+		Host:     ConfEnv.SmtpHost,
 		Port:     SMTPPort,
-		Email:    ConfEnv.SMTP_EMAIL,
-		Password: ConfEnv.SMTP_PASSWORD,
-		Name:     ConfEnv.SMTP_NAME,
+		Email:    ConfEnv.SmtpEmail,
+		Password: ConfEnv.SmtpPassword,
+		Name:     ConfEnv.SmtpName,
 	})
 
 	DBPostgres, err := database.SetupDBPostgres(ConfEnv)

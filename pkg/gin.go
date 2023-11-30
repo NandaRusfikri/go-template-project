@@ -11,9 +11,9 @@ func SetupGin(config dto.ConfigEnvironment) *gin.Engine {
 
 	app := gin.Default()
 
-	if config.GO_ENV == "production" {
+	if config.GoEnv == "production" {
 		gin.SetMode(gin.ReleaseMode)
-	} else if config.GO_ENV == "test" {
+	} else if config.GoEnv == "test" {
 		gin.SetMode(gin.TestMode)
 	} else {
 		gin.SetMode(gin.DebugMode)

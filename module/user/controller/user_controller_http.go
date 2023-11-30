@@ -10,13 +10,13 @@ import (
 )
 
 type UserControllerHTTP struct {
-	user_usecase user.UseCase
+	userUsecase user.UseCaseInterface
 }
 
-func InitUserControllerHTTP(route *gin.Engine, user_usecase user.UseCase) {
+func InitUserControllerHTTP(route *gin.Engine, userUsecase user.UseCaseInterface) {
 
 	controller := &UserControllerHTTP{
-		user_usecase: user_usecase,
+		userUsecase: userUsecase,
 	}
 	groupRoute := route.Group("/api/v1")
 	groupRoute.GET("/users", pkg.Auth, controller.UserList)
@@ -44,7 +44,7 @@ func (c *UserControllerHTTP) ChangePassword(ctx *gin.Context) {
 		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
 		return
 	}
-	err := c.user_usecase.ChangePassword(input)
+	err := c.userUsecase.ChangePassword(input)
 
 	if err.Error != nil {
 		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
@@ -57,7 +57,7 @@ func (c *UserControllerHTTP) ChangePassword(ctx *gin.Context) {
 // @Tags User
 // @Summary  User List
 // @Description  API untuk mengambil data list user
-// @ID User-UserList
+// @ID User-GetList
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce  json
@@ -72,7 +72,7 @@ func (c *UserControllerHTTP) UserList(ctx *gin.Context) {
 		util.APIResponse(ctx, "Request Invalid", 400, 0, nil)
 		return
 	}
-	res, count, err := c.user_usecase.UserList(input)
+	res, count, err := c.userUsecase.GetList(input)
 
 	if err.Error != nil {
 		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
@@ -85,7 +85,7 @@ func (c *UserControllerHTTP) UserList(ctx *gin.Context) {
 // @Tags User
 // @Summary  User Insert
 // @Description  API untuk menambahkan user baru
-// @ID User-UserInsert
+// @ID User-Insert
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce  json
@@ -100,7 +100,7 @@ func (c *UserControllerHTTP) UserInsert(ctx *gin.Context) {
 		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
 		return
 	}
-	err := c.user_usecase.UserInsert(input)
+	err := c.userUsecase.Insert(input)
 
 	if err.Error != nil {
 		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
@@ -114,7 +114,7 @@ func (c *UserControllerHTTP) UserInsert(ctx *gin.Context) {
 // @Tags User
 // @Summary  User Update
 // @Description  API untuk mengedit data user
-// @ID User-UserUpdate
+// @ID User-Update
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce  json
@@ -129,7 +129,7 @@ func (c *UserControllerHTTP) UserUpdate(ctx *gin.Context) {
 		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
 		return
 	}
-	res, err := c.user_usecase.UserUpdate(input)
+	res, err := c.userUsecase.Update(input)
 
 	if err.Error != nil {
 		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
