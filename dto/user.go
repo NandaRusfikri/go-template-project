@@ -5,9 +5,7 @@ type UsersRequest struct {
 	Page       int    `form:"page" example:"1"`
 	Limit      int    `form:"limit" example:"10"`
 	OrderField string `form:"order_field" example:"id|desc"`
-	//Email      string `json:"email"`
-	//Phone      string `json:"phone"`
-	IsActive *bool `form:"is_active"`
+	IsActive   *bool  `form:"is_active"`
 }
 
 type CheckEmail struct {

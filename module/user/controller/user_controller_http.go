@@ -26,16 +26,17 @@ func InitUserControllerHTTP(route *gin.Engine, userUsecase user.UseCaseInterface
 }
 
 // ChangePassword
-// @Tags User
-// @Summary Change Password
-// @Description API for change password user
-// @ID User-ChangePassword
-// @Security ApiKeyAuth
-// @Accept  json
-// @Produce  json
-// @Param data body dto.ChangePassword true "body data"
-// @Success 200
-// @Router /v1/user/change-password [post]
+//
+//	@Tags			User
+//	@Summary		Change Password
+//	@Description	API for change password user
+//	@ID				User-ChangePassword
+//	@Security		ApiKeyAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			data	body	dto.ChangePassword	true	"body data"
+//	@Success		200
+//	@Router			/v1/user/change-password [post]
 func (c *UserControllerHTTP) ChangePassword(ctx *gin.Context) {
 
 	var input dto.ChangePassword
@@ -54,16 +55,17 @@ func (c *UserControllerHTTP) ChangePassword(ctx *gin.Context) {
 }
 
 // UserList
-// @Tags User
-// @Summary  User List
-// @Description  API untuk mengambil data list user
-// @ID User-GetList
-// @Security ApiKeyAuth
-// @Accept  json
-// @Produce  json
-// @Param data body dto.UsersRequest true "body data"
-// @Success 200 {array}  dto.UsersResponse
-// @Router /v1/users [get]
+//
+//	@Tags			User
+//	@Summary		User List
+//	@Description	API untuk mengambil data list user
+//	@ID				User-GetList
+//	@Security		ApiKeyAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			request query	dto.UsersRequest true "as"
+//	@Success		200		{array}	dto.UsersResponse
+//	@Router			/v1/users [get]
 func (c *UserControllerHTTP) UserList(ctx *gin.Context) {
 
 	var input dto.UsersRequest
@@ -82,16 +84,17 @@ func (c *UserControllerHTTP) UserList(ctx *gin.Context) {
 }
 
 // UserInsert
-// @Tags User
-// @Summary  User Insert
-// @Description  API untuk menambahkan user baru
-// @ID User-Insert
-// @Security ApiKeyAuth
-// @Accept  json
-// @Produce  json
-// @Param data body dto.UserInsert true "body data"
-// @Success 200
-// @Router /v1/user [post]
+//
+//	@Tags			User
+//	@Summary		User Insert
+//	@Description	API untuk menambahkan user baru
+//	@ID				User-Insert
+//	@Security		ApiKeyAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			data	body	dto.UserInsert	true	"body data"
+//	@Success		200
+//	@Router			/v1/user [post]
 func (c *UserControllerHTTP) UserInsert(ctx *gin.Context) {
 
 	var input dto.UserInsert
@@ -111,16 +114,17 @@ func (c *UserControllerHTTP) UserInsert(ctx *gin.Context) {
 }
 
 // UserUpdate
-// @Tags User
-// @Summary  User Update
-// @Description  API untuk mengedit data user
-// @ID User-Update
-// @Security ApiKeyAuth
-// @Accept  json
-// @Produce  json
-// @Param data body dto.UserUpdate true "body data"
-// @Success 200
-// @Router /v1/user [put]
+//
+//	@Tags			User
+//	@Summary		User Update
+//	@Description	API untuk mengedit data user
+//	@ID				User-Update
+//	@Security		ApiKeyAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			data	body	dto.UserUpdate	true	"body data"
+//	@Success		200
+//	@Router			/v1/user [put]
 func (c *UserControllerHTTP) UserUpdate(ctx *gin.Context) {
 
 	var input dto.UserUpdate

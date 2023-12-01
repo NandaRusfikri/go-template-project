@@ -22,16 +22,17 @@ func InitProductControllerHTTP(route *gin.Engine, service product.UseCaseInterfa
 }
 
 // ProductList
-// @Tags Product
-// @Summary Product List
-// @Description Product List
-// @ID Item-GetList
-// @Security ApiKeyAuth
-// @Accept  json
-// @Produce  json
-// @Param data body dto.ProductsRequest true "body data"
-// @Success 200
-// @Router /v1/products [get]
+//
+//	@Tags			Product
+//	@Summary		Product List
+//	@Description	Product List
+//	@ID				Item-GetList
+//	@Security		ApiKeyAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			request query	dto.ProductsRequest true "as"
+//	@Success		200
+//	@Router			/v1/products [get]
 func (c *ProductControllerHTTP) ProductList(ctx *gin.Context) {
 
 	var input dto.ProductsRequest

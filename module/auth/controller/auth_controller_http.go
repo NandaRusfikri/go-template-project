@@ -24,16 +24,17 @@ func InitAuthControllerHTTP(route *gin.Engine, authUsecase auth.UseCaseInterface
 }
 
 // ResetPassword
-// @Tags Auth
-// @Summary Reset Password
-// @Description API for confirm reset password
-// @ID User-ResetPassword
-// @Security ApiKeyAuth
-// @Accept  json
-// @Produce  json
-// @Param data body dto.ResetPassword true "body data"
-// @Success 200
-// @Router /v1/auth/reset-password [post]
+//
+//	@Tags			Auth
+//	@Summary		Reset Password
+//	@Description	API for confirm reset password
+//	@ID				User-ResetPassword
+//	@Security		ApiKeyAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			data	body	dto.ResetPassword	true	"body data"
+//	@Success		200
+//	@Router			/v1/auth/reset-password [post]
 func (c *AuthControllerHTTP) ResetPassword(ctx *gin.Context) {
 
 	var input dto.ResetPassword
@@ -52,16 +53,17 @@ func (c *AuthControllerHTTP) ResetPassword(ctx *gin.Context) {
 }
 
 // ForgotPassword
-// @Tags Auth
-// @Summary  Forgot Password
-// @Description  API for Request Forgot Password
-// @ID User-ForgotPassword
-// @Security ApiKeyAuth
-// @Accept  json
-// @Produce  json
-// @Param data body dto.ForgotPassword true "body data"
-// @Success 200
-// @Router /v1/auth/forgot-password [post]
+//
+//	@Tags			Auth
+//	@Summary		Forgot Password
+//	@Description	API for Request Forgot Password
+//	@ID				User-ForgotPassword
+//	@Security		ApiKeyAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			data	body	dto.ForgotPassword	true	"body data"
+//	@Success		200
+//	@Router			/v1/auth/forgot-password [post]
 func (c *AuthControllerHTTP) ForgotPassword(ctx *gin.Context) {
 
 	var input dto.ForgotPassword
@@ -80,16 +82,17 @@ func (c *AuthControllerHTTP) ForgotPassword(ctx *gin.Context) {
 }
 
 // Login
-// @Tags Auth
-// @Summary Login
-// @Description API for Login
-// @ID User-Login
-// @Security ApiKeyAuth
-// @Accept  json
-// @Produce  json
-// @Param data body dto.LoginRequest true "body data"
-// @Success 200
-// @Router /v1/auth/login [post]
+//
+//	@Tags			Auth
+//	@Summary		Login
+//	@Description	API for Login
+//	@ID				User-Login
+//	@Security		ApiKeyAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			data	body	dto.LoginRequest	true	"body data"
+//	@Success		200
+//	@Router			/v1/auth/login [post]
 func (c *AuthControllerHTTP) Login(ctx *gin.Context) {
 
 	var input dto.LoginRequest

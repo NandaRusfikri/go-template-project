@@ -156,13 +156,28 @@ const docTemplate = `{
                 "operationId": "Item-GetList",
                 "parameters": [
                     {
-                        "description": "body data",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ProductsRequest"
-                        }
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "id|desc",
+                        "name": "order_field",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "Search name ku",
+                        "name": "search_text",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -198,7 +213,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.Update"
+                            "$ref": "#/definitions/dto.UserUpdate"
                         }
                     }
                 ],
@@ -233,7 +248,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.Insert"
+                            "$ref": "#/definitions/dto.UserInsert"
                         }
                     }
                 ],
@@ -302,13 +317,32 @@ const docTemplate = `{
                 "operationId": "User-GetList",
                 "parameters": [
                     {
-                        "description": "body data",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.UsersRequest"
-                        }
+                        "type": "boolean",
+                        "name": "is_active",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "id|desc",
+                        "name": "order_field",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "search_text",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -377,27 +411,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.ProductsRequest": {
-            "type": "object",
-            "properties": {
-                "limit": {
-                    "type": "integer",
-                    "example": 10
-                },
-                "order_field": {
-                    "type": "string",
-                    "example": "id|desc"
-                },
-                "page": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "search_text": {
-                    "type": "string",
-                    "example": "Search name ku"
-                }
-            }
-        },
         "dto.ResetPassword": {
             "type": "object",
             "required": [
@@ -417,7 +430,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.Insert": {
+        "dto.UserInsert": {
             "type": "object",
             "required": [
                 "email",
@@ -439,7 +452,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.Update": {
+        "dto.UserUpdate": {
             "type": "object",
             "required": [
                 "id"
@@ -464,30 +477,6 @@ const docTemplate = `{
                 "phone": {
                     "type": "string",
                     "example": "08123456789"
-                }
-            }
-        },
-        "dto.UsersRequest": {
-            "type": "object",
-            "properties": {
-                "is_active": {
-                    "description": "Email      string ` + "`" + `json:\"email\"` + "`" + `\nPhone      string ` + "`" + `json:\"phone\"` + "`" + `",
-                    "type": "boolean"
-                },
-                "limit": {
-                    "type": "integer",
-                    "example": 10
-                },
-                "order_field": {
-                    "type": "string",
-                    "example": "id|desc"
-                },
-                "page": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "search_text": {
-                    "type": "string"
                 }
             }
         },

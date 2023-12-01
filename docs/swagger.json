@@ -145,16 +145,31 @@
                     "Product"
                 ],
                 "summary": "Product List",
-                "operationId": "Item-ProductList",
+                "operationId": "Item-GetList",
                 "parameters": [
                     {
-                        "description": "body data",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ProductsRequest"
-                        }
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "id|desc",
+                        "name": "order_field",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "Search name ku",
+                        "name": "search_text",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -182,7 +197,7 @@
                     "User"
                 ],
                 "summary": "User Update",
-                "operationId": "User-UserUpdate",
+                "operationId": "User-Update",
                 "parameters": [
                     {
                         "description": "body data",
@@ -217,7 +232,7 @@
                     "User"
                 ],
                 "summary": "User Insert",
-                "operationId": "User-UserInsert",
+                "operationId": "User-Insert",
                 "parameters": [
                     {
                         "description": "body data",
@@ -291,16 +306,35 @@
                     "User"
                 ],
                 "summary": "User List",
-                "operationId": "User-UserList",
+                "operationId": "User-GetList",
                 "parameters": [
                     {
-                        "description": "body data",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.UsersRequest"
-                        }
+                        "type": "boolean",
+                        "name": "is_active",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "id|desc",
+                        "name": "order_field",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "search_text",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -366,27 +400,6 @@
                 "password": {
                     "type": "string",
                     "example": "12345678"
-                }
-            }
-        },
-        "dto.ProductsRequest": {
-            "type": "object",
-            "properties": {
-                "limit": {
-                    "type": "integer",
-                    "example": 10
-                },
-                "order_field": {
-                    "type": "string",
-                    "example": "id|desc"
-                },
-                "page": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "search_text": {
-                    "type": "string",
-                    "example": "Search name ku"
                 }
             }
         },
@@ -456,30 +469,6 @@
                 "phone": {
                     "type": "string",
                     "example": "08123456789"
-                }
-            }
-        },
-        "dto.UsersRequest": {
-            "type": "object",
-            "properties": {
-                "is_active": {
-                    "description": "Email      string `json:\"email\"`\nPhone      string `json:\"phone\"`",
-                    "type": "boolean"
-                },
-                "limit": {
-                    "type": "integer",
-                    "example": 10
-                },
-                "order_field": {
-                    "type": "string",
-                    "example": "id|desc"
-                },
-                "page": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "search_text": {
-                    "type": "string"
                 }
             }
         },
