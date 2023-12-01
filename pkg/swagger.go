@@ -16,21 +16,21 @@ func InitSwagger(httpGin *gin.Engine) {
 	docs.SwaggerInfo.Host = os.Getenv("SWAGGER_HOST")
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
-	// @title go-template-project
-	// @version 1.0
-	// @description This Project Template Go which I usually use.
-	// @termsOfService http://swagger.io/terms/
+	//	@title			go-template-project
+	//	@version		1.0
+	//	@description	This Project Template Go which I usually use.
+	//	@termsOfService	http://swagger.io/terms/
 
-	// @contact.name API Support
-	// @contact.url http://www.swagger.io/support
-	// @contact.email nandarusfikri@gmail.com
-	// @license.name Apache 2.0
-	// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
-	// @query.collection.format multi
-	// @securityDefinitions.apikey ApiKeyAuth
-	// @in header
-	// @name Authorization
-	// @x-extension-openapi {"example": "value on a json format"}
+	//	@contact.name				API Support
+	//	@contact.url				http://www.swagger.io/support
+	//	@contact.email				nandarusfikri@gmail.com
+	//	@license.name				Apache 2.0
+	//	@license.url				http://www.apache.org/licenses/LICENSE-2.0.html
+	//	@query.collection.format	multi
+	//	@securityDefinitions.apikey	ApiKeyAuth
+	//	@in							header
+	//	@name						Authorization
+	//	@x-extension-openapi		{"example": "value on a json format"}
 
 	httpGin.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 

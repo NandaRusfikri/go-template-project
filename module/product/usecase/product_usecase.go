@@ -16,7 +16,7 @@ func InitProductUseCase(repo product.RepositoryInterface) *ProductUseCase {
 	}
 }
 
-func (u *ProductUseCase) GetList(input dto.ProductsRequest) ([]*entity.MSProduct, int64, dto.ResponseError) {
+func (u *ProductUseCase) GetList(input dto.ProductsRequest) ([]*entity.Products, int64, dto.ResponseError) {
 
 	res, count, err := u.productRepo.GetList(input)
 

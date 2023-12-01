@@ -99,25 +99,6 @@ definitions:
     required:
     - id
     type: object
-  dto.UsersRequest:
-    properties:
-      is_active:
-        description: |-
-          Email      string `json:"email"`
-          Phone      string `json:"phone"`
-        type: boolean
-      limit:
-        example: 10
-        type: integer
-      order_field:
-        example: id|desc
-        type: string
-      page:
-        example: 1
-        type: integer
-      search_text:
-        type: string
-    type: object
   dto.UsersResponse:
     properties:
       avatar_path:
@@ -218,7 +199,7 @@ paths:
       consumes:
       - application/json
       description: Product List
-      operationId: Item-ProductList
+      operationId: Item-GetList
       parameters:
       - description: body data
         in: body
@@ -241,7 +222,7 @@ paths:
       consumes:
       - application/json
       description: API untuk menambahkan user baru
-      operationId: User-UserInsert
+      operationId: User-Insert
       parameters:
       - description: body data
         in: body
@@ -263,7 +244,7 @@ paths:
       consumes:
       - application/json
       description: API untuk mengedit data user
-      operationId: User-UserUpdate
+      operationId: User-Update
       parameters:
       - description: body data
         in: body
@@ -309,14 +290,26 @@ paths:
       consumes:
       - application/json
       description: API untuk mengambil data list user
-      operationId: User-UserList
+      operationId: User-GetList
       parameters:
-      - description: body data
-        in: body
-        name: data
-        required: true
-        schema:
-          $ref: '#/definitions/dto.UsersRequest'
+      - in: query
+        name: is_active
+        type: boolean
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: id|desc
+        in: query
+        name: order_field
+        type: string
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - in: query
+        name: search_text
+        type: string
       produces:
       - application/json
       responses:

@@ -25,7 +25,7 @@ func InitProductRepository(dbCon *gorm.DB) product.RepositoryInterface {
 func (r *ProductRepository) GetIds(ids []uint64) ([]uint64, dto.ResponseError) {
 
 	var ArrayId []uint64
-	Check := r.db.Model(&entity.MSProduct{}).Select("id").Where("id IN ?", ids).Find(&ArrayId)
+	Check := r.db.Model(&entity.Products{}).Select("id").Where("id IN ?", ids).Find(&ArrayId)
 
 	if Check.Error != nil {
 		if errors.Is(Check.Error, gorm.ErrRecordNotFound) {
@@ -38,20 +38,20 @@ func (r *ProductRepository) GetIds(ids []uint64) ([]uint64, dto.ResponseError) {
 
 }
 
-func (r *ProductRepository) GetList(input dto.ProductsRequest) ([]*entity.MSProduct, int64, dto.ResponseError) {
+func (r *ProductRepository) GetList(input dto.ProductsRequest) ([]*entity.Products, int64, dto.ResponseError) {
 
-	var ListItem []*entity.MSProduct
+	var ListItem []*entity.Products
 
-	db := r.db.Model(&entity.MSProduct{})
+	db := r.db.Model(&entity.Products{})
 
 	if input.SearchText != "" {
 		search := "%" + strings.ToLower(input.SearchText) + "%"
-		db = db.Where(fmt.Sprintf("LOWER(%v.name) LIKE ? ", constant.TABLE_MS_PRODUCT), search)
+		db = db.Where(fmt.Sprintf("LOWER(%v.name) LIKE ? ", constant.TABLE_PRODUCTS), search)
 	}
 
 	var count int64
 
-	dbCount := db.Model(entity.MSProduct{}).Count(&count)
+	dbCount := db.Model(entity.Products{}).Count(&count)
 	if dbCount.Error != nil && !errors.Is(dbCount.Error, gorm.ErrRecordNotFound) {
 		return nil, 0, dto.ResponseError{Error: dbCount.Error, Code: 500}
 	}
@@ -65,11 +65,11 @@ func (r *ProductRepository) GetList(input dto.ProductsRequest) ([]*entity.MSProd
 		orderColumn, orderType := util.SplitOrderQuery(input.OrderField)
 		switch orderColumn {
 		case "id":
-			orderByQuery += fmt.Sprintf(" %v.id %v", constant.TABLE_MS_PRODUCT, orderType)
+			orderByQuery += fmt.Sprintf(" %v.id %v", constant.TABLE_PRODUCTS, orderType)
 		case "name":
-			orderByQuery += fmt.Sprintf(" %v.name %v", constant.TABLE_MS_PRODUCT, orderType)
+			orderByQuery += fmt.Sprintf(" %v.name %v", constant.TABLE_PRODUCTS, orderType)
 		default:
-			orderByQuery += fmt.Sprintf(" %v.id DESC", constant.TABLE_MS_PRODUCT)
+			orderByQuery += fmt.Sprintf(" %v.id DESC", constant.TABLE_PRODUCTS)
 		}
 	} else {
 		orderByQuery += "id DESC"
@@ -93,7 +93,7 @@ func (r *ProductRepository) GetList(input dto.ProductsRequest) ([]*entity.MSProd
 
 }
 
-func (r *ProductRepository) ProductInsert(input entity.MSProduct) dto.ResponseError {
+func (r *ProductRepository) ProductInsert(input entity.Products) dto.ResponseError {
 
 	Create := r.db.Create(&input)
 	if Create.Error != nil {

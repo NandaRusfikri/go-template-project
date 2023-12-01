@@ -11,24 +11,24 @@ import (
 
 func MigrateDBSQL(db *gorm.DB) error {
 	err := db.AutoMigrate(
-		&userentity.User{},
+		&userentity.Users{},
 		&authentity.ForgotPassword{},
-		&productentity.MSProduct{},
+		&productentity.Products{},
 	)
 
 	if err != nil {
 		log.Errorln("❌ Error Migrate ", err.Error())
 		return err
 	}
-	if data := db.Find(&userentity.User{}); data.RowsAffected < 1 {
+	if data := db.Find(&userentity.Users{}); data.RowsAffected < 1 {
 
-		UserAdmin := userentity.User{
+		UserAdmin := userentity.Users{
 			Name:     "Super Admin",
 			Email:    "super.admin@gmail.com",
 			Password: pkg.HashPassword("12345678"),
 		}
 
-		UserAri := userentity.User{
+		UserAri := userentity.Users{
 			Name:     "Malik",
 			Email:    "malik@gmail.id",
 			Password: pkg.HashPassword("12345678"),
@@ -37,29 +37,29 @@ func MigrateDBSQL(db *gorm.DB) error {
 		db.Create(&UserAri)
 	}
 
-	if data := db.Find(&productentity.MSProduct{}); data.RowsAffected < 1 {
-		db.Create(&productentity.MSProduct{
+	if data := db.Find(&productentity.Products{}); data.RowsAffected < 1 {
+		db.Create(&productentity.Products{
 			Name:     "Mouse",
 			Quantity: 1000,
 			Price:    10000})
-		db.Create(&productentity.MSProduct{
+		db.Create(&productentity.Products{
 			Name:     "Keyboard",
 			Quantity: 1000,
 			Price:    10000})
-		db.Create(&productentity.MSProduct{
+		db.Create(&productentity.Products{
 			Name:     "Laptop",
 			Quantity: 1000,
 			Price:    10000})
-		db.Create(&productentity.MSProduct{
+		db.Create(&productentity.Products{
 			Name:     "Printer",
 			Quantity: 1000,
 			Price:    10000})
-		db.Create(&productentity.MSProduct{
+		db.Create(&productentity.Products{
 			Name:     "Monitor",
 			Quantity: 1000,
 			Price:    10000})
 
-		log.Println("✅ Seed MSProduct inserted")
+		log.Println("✅ Seed Products inserted")
 	}
 
 	return err

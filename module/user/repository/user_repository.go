@@ -20,23 +20,23 @@ func InitUserRepository(db *gorm.DB) *UserRepository {
 }
 
 func (r *UserRepository) GetList(input dto.UsersRequest) ([]*dto.UsersResponse, int64, dto.ResponseError) {
-	var ListEntityUser []*userEntity.User
+	var ListEntityUser []*userEntity.Users
 
-	db := r.db.Debug().Model(&userEntity.User{})
+	db := r.db.Debug().Model(&userEntity.Users{})
 
 	if input.SearchText != "" {
 		search := "%" + strings.ToLower(input.SearchText) + "%"
-		db = db.Where(fmt.Sprintf("LOWER(%v.name) LIKE ? OR LOWER(%v.email) LIKE ? OR LOWER(%v.phone) LIKE ? ", constant.TABLE_MS_USER, constant.TABLE_MS_USER, constant.TABLE_MS_USER),
+		db = db.Where(fmt.Sprintf("LOWER(%v.name) LIKE ? OR LOWER(%v.email) LIKE ? OR LOWER(%v.phone) LIKE ? ", constant.TABLE_USERS, constant.TABLE_USERS, constant.TABLE_USERS),
 			search, search, search)
 	}
 
 	if input.IsActive != nil {
-		db = db.Where(fmt.Sprintf("%v.is_active = ?", constant.TABLE_MS_USER), input.IsActive)
+		db = db.Where(fmt.Sprintf("%v.is_active = ?", constant.TABLE_USERS), input.IsActive)
 	}
 
 	var count int64
 
-	dbCount := db.Table(constant.TABLE_MS_USER).Model(userEntity.User{}).Count(&count)
+	dbCount := db.Table(constant.TABLE_USERS).Model(userEntity.Users{}).Count(&count)
 	if dbCount.Error != nil && !errors.Is(dbCount.Error, gorm.ErrRecordNotFound) {
 		return nil, 0, dto.ResponseError{Error: dbCount.Error, Code: 500}
 	}
@@ -49,11 +49,11 @@ func (r *UserRepository) GetList(input dto.UsersRequest) ([]*dto.UsersResponse, 
 		orderColumn, orderType := util.SplitOrderQuery(input.OrderField)
 		switch orderColumn {
 		case "id":
-			orderByQuery += fmt.Sprintf(" %v.id %v", constant.TABLE_MS_USER, orderType)
+			orderByQuery += fmt.Sprintf(" %v.id %v", constant.TABLE_USERS, orderType)
 		case "name":
-			orderByQuery += fmt.Sprintf(" %v.name %v", constant.TABLE_MS_USER, orderType)
+			orderByQuery += fmt.Sprintf(" %v.name %v", constant.TABLE_USERS, orderType)
 		default:
-			orderByQuery += fmt.Sprintf(" %v.id DESC", constant.TABLE_MS_USER)
+			orderByQuery += fmt.Sprintf(" %v.id DESC", constant.TABLE_USERS)
 		}
 	} else {
 		orderByQuery += "id DESC"
@@ -91,8 +91,8 @@ func (r *UserRepository) GetList(input dto.UsersRequest) ([]*dto.UsersResponse, 
 	return ListSchemaUser, count, dto.ResponseError{}
 }
 
-func (r *UserRepository) FindById(id uint64) (*userEntity.User, dto.ResponseError) {
-	EntityUser := userEntity.User{}
+func (r *UserRepository) FindById(id uint64) (*userEntity.Users, dto.ResponseError) {
+	EntityUser := userEntity.Users{}
 
 	db := r.db.Where("id = ?", id)
 
@@ -108,7 +108,7 @@ func (r *UserRepository) FindById(id uint64) (*userEntity.User, dto.ResponseErro
 	return &EntityUser, dto.ResponseError{}
 }
 
-func (r *UserRepository) Insert(input userEntity.User) dto.ResponseError {
+func (r *UserRepository) Insert(input userEntity.Users) dto.ResponseError {
 
 	IsActive := true
 	input.IsActive = &IsActive
@@ -124,9 +124,9 @@ func (r *UserRepository) Insert(input userEntity.User) dto.ResponseError {
 
 }
 
-func (r *UserRepository) FindByEmail(email string) (*userEntity.User, dto.ResponseError) {
+func (r *UserRepository) FindByEmail(email string) (*userEntity.Users, dto.ResponseError) {
 
-	var user userEntity.User
+	var user userEntity.Users
 	CheckEmail := r.db.Debug().Where("email = ?", email).First(&user)
 	if CheckEmail.Error != nil {
 		return nil, dto.ResponseError{Error: CheckEmail.Error, Code: 404}
@@ -135,8 +135,8 @@ func (r *UserRepository) FindByEmail(email string) (*userEntity.User, dto.Respon
 	return &user, dto.ResponseError{}
 }
 
-func (r *UserRepository) FindByUsername(username string) (*userEntity.User, dto.ResponseError) {
-	var user userEntity.User
+func (r *UserRepository) FindByUsername(username string) (*userEntity.Users, dto.ResponseError) {
+	var user userEntity.Users
 	CheckUsername := r.db.Where("username = ?", username).First(&user)
 	if CheckUsername.Error != nil {
 		return nil, dto.ResponseError{Error: CheckUsername.Error, Code: 404}
@@ -145,9 +145,9 @@ func (r *UserRepository) FindByUsername(username string) (*userEntity.User, dto.
 	return &user, dto.ResponseError{}
 }
 
-func (r *UserRepository) Update(input userEntity.User) (*userEntity.User, dto.ResponseError) {
+func (r *UserRepository) Update(input userEntity.Users) (*userEntity.Users, dto.ResponseError) {
 
-	var entity userEntity.User
+	var entity userEntity.Users
 	find := r.db.Where("id = ?", input.ID).First(&entity)
 	if find.Error != nil {
 		if errors.Is(find.Error, gorm.ErrRecordNotFound) {
@@ -172,7 +172,7 @@ func (r *UserRepository) Update(input userEntity.User) (*userEntity.User, dto.Re
 
 func (r *UserRepository) ChangePassword(userId uint64, newPassword string) dto.ResponseError {
 
-	entity := userEntity.User{
+	entity := userEntity.Users{
 		ID:       userId,
 		Password: newPassword,
 	}

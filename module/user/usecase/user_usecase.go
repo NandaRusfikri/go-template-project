@@ -29,7 +29,7 @@ func (u *UserUseCase) Insert(input dto.UserInsert) dto.ResponseError {
 		return dto.ResponseError{Error: fmt.Errorf("email already exist"), Code: 400}
 	}
 
-	EntityUser := userEntity.User{
+	EntityUser := userEntity.Users{
 		Name:     input.Name,
 		Email:    input.Email,
 		Password: pkg.HashPassword(input.Password),
@@ -41,9 +41,9 @@ func (u *UserUseCase) Insert(input dto.UserInsert) dto.ResponseError {
 
 }
 
-func (u *UserUseCase) Update(input dto.UserUpdate) (*userEntity.User, dto.ResponseError) {
+func (u *UserUseCase) Update(input dto.UserUpdate) (*userEntity.Users, dto.ResponseError) {
 
-	entity := userEntity.User{
+	entity := userEntity.Users{
 		ID:    input.Id,
 		Name:  input.Name,
 		Email: input.Email,

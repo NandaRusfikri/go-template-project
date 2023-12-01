@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type User struct {
+type Users struct {
 	ID         uint64     `gorm:"column:id;primaryKey;AUTO_INCREMENT" json:"id"`
 	CreatedAt  time.Time  `gorm:"created_at;default:now()" json:"created_at,omitempty"`
 	UpdatedAt  *time.Time `gorm:"updated_at" json:"-"`
@@ -18,6 +18,6 @@ type User struct {
 	AvatarPath string     `gorm:"avatar_path" json:"avatar_path,omitempty"`
 }
 
-func (entity *User) TableName() string {
-	return constant.TABLE_MS_USER
+func (entity *Users) TableName() string {
+	return constant.TABLE_USERS
 }

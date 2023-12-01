@@ -57,7 +57,7 @@ func (r *AuthRepository) ResetPassword(input dto.ResetPassword) dto.ResponseErro
 		return dto.ResponseError{Error: Find.Error, Code: 500}
 	}
 
-	var user userEntity.User
+	var user userEntity.Users
 	FindUser := r.db.Where("id = ?", entity.UserId).Where("email = ?", input.Email).First(&user)
 	if FindUser.Error != nil {
 		if errors.Is(FindUser.Error, gorm.ErrRecordNotFound) {
