@@ -24,6 +24,12 @@ func InitAuthUseCase(authRepo auth.RepositoryInterface, userRepo user.Repository
 	return &AuthUseCase{authRepo: authRepo, userRepo: userRepo, SMTP: smtp}
 }
 
+func (u *AuthUseCase) ResetPassword(input dto.ResetPassword) dto.ResponseError {
+
+	err := u.authRepo.ResetPassword(input)
+	return err
+}
+
 func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.ResponseError) {
 
 	entityUser, err := u.userRepo.FindByEmail(input.Email)
@@ -95,10 +101,4 @@ func (u *AuthUseCase) ForgotPassword(input dto.ForgotPassword) dto.ResponseError
 		}
 	}
 	return dto.ResponseError{}
-}
-
-func (u *AuthUseCase) ResetPassword(input dto.ResetPassword) dto.ResponseError {
-
-	err := u.authRepo.ResetPassword(input)
-	return err
 }

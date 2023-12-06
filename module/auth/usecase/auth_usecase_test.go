@@ -5,18 +5,34 @@ import (
 	"github.com/stretchr/testify/mock"
 	"go-template-project/dto"
 	"go-template-project/module/auth/repository"
+	userrepo "go-template-project/module/user/repository"
+	"go-template-project/pkg"
 	"testing"
 )
 
 var authRepository = &repository.AuthRepositoryMock{
 	Mock: mock.Mock{},
 }
-var authUseCase = authUseCase{
-	authRepo: authRepository,
+var userRepository = &userrepo.UserRepositoryMock{
+	Mock: mock.Mock{},
 }
 
+var mockSMTP = new(pkg.SMTP)
+var authUsecase = InitAuthUseCase(authRepository, userRepository, mockSMTP)
+
 func TestResetPassword(t *testing.T) {
-	authRepository.Mock.On("ResetPassword", dto.ResetPassword{}).Return(nil)
-	errResp := authUseCase.ResetPassword(dto.ResetPassword{Email: "nanda@gmail.com", NewPassword: "admin"})
-	assert.Equal(t, dto.ResponseError{}, errResp)
+
+	testInput := dto.ResetPassword{
+		Token:       "testToken",
+		NewPassword: "newPassword",
+		Email:       "test@example.com",
+	}
+
+	authRepository.Mock.On("ResetPassword", testInput).Return(dto.ResponseError{})
+
+	actualError := authUsecase.ResetPassword(testInput)
+
+	authRepository.Mock.AssertExpectations(t)
+	assert.Equal(t, dto.ResponseError{}, actualError)
+
 }
