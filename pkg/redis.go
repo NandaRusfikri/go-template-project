@@ -44,7 +44,7 @@ func (r *Redis) New() (err error) {
 	if err != nil {
 		return err
 	}
-	log.Info("Redis - New() - result Ping: %v", result)
+	log.Info("Redis - New() - result Ping: ", result)
 
 	r.Client = client
 	log.Info("Redis - New() - finished.")
