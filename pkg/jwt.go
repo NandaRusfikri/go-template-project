@@ -73,15 +73,6 @@ func Auth(ctx *gin.Context) {
 		return
 	}
 
-	//Authorization := strings.Split(tokenHeader, " ")
-	//if Authorization[0] != "Bearer" {
-	//	ctx.JSON(401, gin.H{
-	//		"status_code": 401,
-	//		"message":     "Unauthorized",
-	//	})
-	//	ctx.Abort()
-	//}
-
 	Secret := os.Getenv("JWT_SECRET")
 	_, err := jwt.Parse(tokenHeader, func(token *jwt.Token) (interface{}, error) {
 		if jwt.GetSigningMethod("HS256") != token.Method {
@@ -117,11 +108,3 @@ func VerifyToken(accessToken, SecretPublicKeyEnvName string) (*jwt.Token, error)
 
 	return token, nil
 }
-
-//func DecodeToken(accessToken *jwt.Token) AccessToken {
-//	var token AccessToken
-//	stringify, _ := json.Marshal(&accessToken)
-//	json.Unmarshal(stringify, &token)
-//
-//	return token
-//}
