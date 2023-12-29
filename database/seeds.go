@@ -2,24 +2,14 @@ package database
 
 import (
 	log "github.com/sirupsen/logrus"
-	authentity "go-template-project/module/auth/entity"
 	productentity "go-template-project/module/product/entity"
 	userentity "go-template-project/module/user/entity"
 	"go-template-project/pkg"
 	"gorm.io/gorm"
 )
 
-func MigrateDBSQL(db *gorm.DB) error {
-	err := db.AutoMigrate(
-		&userentity.Users{},
-		&authentity.ForgotPassword{},
-		&productentity.Products{},
-	)
+func createSeeds(db *gorm.DB) error {
 
-	if err != nil {
-		log.Errorln("❌ Error Migrate ", err.Error())
-		return err
-	}
 	if data := db.Find(&userentity.Users{}); data.RowsAffected < 1 {
 
 		UserAdmin := userentity.Users{
@@ -62,5 +52,5 @@ func MigrateDBSQL(db *gorm.DB) error {
 		log.Println("✅ Seed Products inserted")
 	}
 
-	return err
+	return nil
 }

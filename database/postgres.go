@@ -2,14 +2,14 @@ package database
 
 import (
 	"fmt"
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"go-template-project/dto"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func SetupDBPostgres(config dto.ConfigEnvironment) (*gorm.DB, error) {
-	logrus.Debug("🔌 Connecting into Database")
+	log.Debug("🔌 Connecting into Database")
 	dbHost := config.DbHost
 	dbUsername := config.DbUser
 	dbPassword := config.DbPass
@@ -24,17 +24,19 @@ func SetupDBPostgres(config dto.ConfigEnvironment) (*gorm.DB, error) {
 	db, err := gorm.Open(postgres.Open(path), &gorm.Config{})
 
 	if err != nil {
-		defer logrus.Errorln("❌ Error Connect into Database ", err.Error())
+		log.Errorln("❌ Error Connect into Database ", err.Error())
 		return nil, err
 	}
 
-	err = MigrateDBSQL(db)
-	if err != nil {
-		logrus.Errorln("❌ Error Migrate ", err.Error())
+	if err := migrateDB(config); err != nil {
 		return nil, err
 	}
 
-	logrus.Debug("❌ Connect into Database Success")
+	if err = createSeeds(db); err != nil {
+		return nil, err
+	}
+
+	log.Debug("🔌 Connect into Database Success")
 
 	return db, nil
 }
