@@ -9,13 +9,13 @@ import (
 	"go-template-project/dto"
 )
 
-func migrateDB(config dto.ConfigEnvironment) error {
-	dbHost := config.DbHost
-	dbUsername := config.DbUser
-	dbPassword := config.DbPass
-	dbName := config.DbName
-	dbPort := config.DbPort
-	dbSSLMode := config.DbSslmode
+func migrateDB(config dto.ConfigDatabase) error {
+	dbHost := config.Host
+	dbUsername := config.User
+	dbPassword := config.Pass
+	dbName := config.Name
+	dbPort := config.Port
+	dbSSLMode := config.SSLmode
 
 	m, err := migrate.New(
 		"file://database/migrations",

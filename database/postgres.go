@@ -8,15 +8,14 @@ import (
 	"gorm.io/gorm"
 )
 
-func SetupDBPostgres(config dto.ConfigEnvironment) (*gorm.DB, error) {
+func InitDBPostgres(config dto.ConfigDatabase, timezone string) (*gorm.DB, error) {
 	log.Debug("🔌 Connecting into Database")
-	dbHost := config.DbHost
-	dbUsername := config.DbUser
-	dbPassword := config.DbPass
-	dbName := config.DbName
-	dbPort := config.DbPort
-	dbSSLMode := config.DbSslmode
-	timezone := config.Timezone
+	dbHost := config.Host
+	dbUsername := config.User
+	dbPassword := config.Pass
+	dbName := config.Name
+	dbPort := config.Port
+	dbSSLMode := config.SSLmode
 
 	path := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=%v TimeZone=%v",
 		dbHost, dbUsername, dbPassword, dbName, dbPort, dbSSLMode, timezone)

@@ -4,13 +4,14 @@ import (
 	log "github.com/sirupsen/logrus"
 	"go-template-project/dto"
 	"gopkg.in/gomail.v2"
+	"strconv"
 )
 
 type SMTP struct {
-	Config *dto.SMTPConfig
+	Config *dto.ConfigSMTP
 }
 
-func InitEmail(config *dto.SMTPConfig) *SMTP {
+func InitEmail(config *dto.ConfigSMTP) *SMTP {
 	return &SMTP{
 		Config: config,
 	}
@@ -42,15 +43,20 @@ func (e *SMTP) SendEmail(params dto.SendEmail) error {
 		}
 	}
 
+	Port, err := strconv.Atoi(e.Config.Port)
+	if err != nil {
+		log.Errorln("SMTP Port is not valid ", err.Error())
+	}
+
 	dialer := gomail.NewDialer(
 		e.Config.Host,
-		e.Config.Port,
+		Port,
 		e.Config.Email,
 		e.Config.Password,
 	)
-	//dialer.TLSConfig.InsecureSkipVerify = true
+	dialer.TLSConfig.InsecureSkipVerify = true
 
-	err := dialer.DialAndSend(mailer)
+	err = dialer.DialAndSend(mailer)
 	if err != nil {
 		log.Errorln("❌ Email - Send - error: ", err)
 		return err
