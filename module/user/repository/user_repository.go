@@ -19,7 +19,7 @@ func InitUserRepository(db *gorm.DB) *UserRepository {
 	return &UserRepository{db: db}
 }
 
-func (r *UserRepository) GetList(input dto.UsersRequest) ([]*dto.UsersResponse, int64, dto.ResponseError) {
+func (r *UserRepository) GetList(input dto.UsersRequest) ([]*dto.UsersResponse, int64, dto.ErrorResponse) {
 	var ListEntityUser []*userEntity.Users
 
 	db := r.db.Debug().Model(&userEntity.Users{})
@@ -38,11 +38,11 @@ func (r *UserRepository) GetList(input dto.UsersRequest) ([]*dto.UsersResponse, 
 
 	dbCount := db.Table(constant.TABLE_USERS).Model(userEntity.Users{}).Count(&count)
 	if dbCount.Error != nil && !errors.Is(dbCount.Error, gorm.ErrRecordNotFound) {
-		return nil, 0, dto.ResponseError{Error: dbCount.Error, Code: 500}
+		return nil, 0, dto.ErrorResponse{Error: dbCount.Error, Code: 500}
 	}
 
 	if count < 1 {
-		return []*dto.UsersResponse{}, 0, dto.ResponseError{}
+		return []*dto.UsersResponse{}, 0, dto.ErrorResponse{}
 	}
 	orderByQuery := ""
 	if input.OrderField != "" {
@@ -68,9 +68,9 @@ func (r *UserRepository) GetList(input dto.UsersRequest) ([]*dto.UsersResponse, 
 	Find := db.Debug().Find(&ListEntityUser)
 	if Find.Error != nil {
 		if errors.Is(Find.Error, gorm.ErrRecordNotFound) {
-			return nil, 0, dto.ResponseError{Error: Find.Error, Code: 401}
+			return nil, 0, dto.ErrorResponse{Error: Find.Error, Code: 401}
 		}
-		return nil, 0, dto.ResponseError{Error: Find.Error, Code: 500}
+		return nil, 0, dto.ErrorResponse{Error: Find.Error, Code: 500}
 	}
 
 	var ListSchemaUser []*dto.UsersResponse
@@ -88,10 +88,10 @@ func (r *UserRepository) GetList(input dto.UsersRequest) ([]*dto.UsersResponse, 
 		ListSchemaUser = append(ListSchemaUser, &DataUser)
 	}
 
-	return ListSchemaUser, count, dto.ResponseError{}
+	return ListSchemaUser, count, dto.ErrorResponse{}
 }
 
-func (r *UserRepository) FindById(id uint64) (*userEntity.Users, dto.ResponseError) {
+func (r *UserRepository) FindById(id uint64) (*userEntity.Users, dto.ErrorResponse) {
 	EntityUser := userEntity.Users{}
 
 	db := r.db.Where("id = ?", id)
@@ -100,60 +100,60 @@ func (r *UserRepository) FindById(id uint64) (*userEntity.Users, dto.ResponseErr
 
 	if Find.Error != nil {
 		if errors.Is(Find.Error, gorm.ErrRecordNotFound) {
-			return nil, dto.ResponseError{Error: Find.Error, Code: 401}
+			return nil, dto.ErrorResponse{Error: Find.Error, Code: 401}
 		}
-		return nil, dto.ResponseError{Error: Find.Error, Code: 500}
+		return nil, dto.ErrorResponse{Error: Find.Error, Code: 500}
 	}
 
-	return &EntityUser, dto.ResponseError{}
+	return &EntityUser, dto.ErrorResponse{}
 }
 
-func (r *UserRepository) Insert(input userEntity.Users) dto.ResponseError {
+func (r *UserRepository) Insert(input userEntity.Users) dto.ErrorResponse {
 
 	IsActive := true
 	input.IsActive = &IsActive
 	Create := r.db.Create(&input)
 	if Create.Error != nil {
-		return dto.ResponseError{Error: Create.Error, Code: 500}
+		return dto.ErrorResponse{Error: Create.Error, Code: 500}
 	}
 	if Create.RowsAffected < 1 {
-		return dto.ResponseError{Error: errors.New("user Create Error"), Code: 500}
+		return dto.ErrorResponse{Error: errors.New("user Create Error"), Code: 500}
 	}
 
-	return dto.ResponseError{}
+	return dto.ErrorResponse{}
 
 }
 
-func (r *UserRepository) FindByEmail(email string) (*userEntity.Users, dto.ResponseError) {
+func (r *UserRepository) FindByEmail(email string) (*userEntity.Users, dto.ErrorResponse) {
 
 	var user userEntity.Users
 	CheckEmail := r.db.Debug().Where("email = ?", email).First(&user)
 	if CheckEmail.Error != nil {
-		return nil, dto.ResponseError{Error: CheckEmail.Error, Code: 404}
+		return nil, dto.ErrorResponse{Error: CheckEmail.Error, Code: 404}
 	}
 
-	return &user, dto.ResponseError{}
+	return &user, dto.ErrorResponse{}
 }
 
-func (r *UserRepository) FindByUsername(username string) (*userEntity.Users, dto.ResponseError) {
+func (r *UserRepository) FindByUsername(username string) (*userEntity.Users, dto.ErrorResponse) {
 	var user userEntity.Users
 	CheckUsername := r.db.Where("username = ?", username).First(&user)
 	if CheckUsername.Error != nil {
-		return nil, dto.ResponseError{Error: CheckUsername.Error, Code: 404}
+		return nil, dto.ErrorResponse{Error: CheckUsername.Error, Code: 404}
 	}
 
-	return &user, dto.ResponseError{}
+	return &user, dto.ErrorResponse{}
 }
 
-func (r *UserRepository) Update(input userEntity.Users) (*userEntity.Users, dto.ResponseError) {
+func (r *UserRepository) Update(input userEntity.Users) (*userEntity.Users, dto.ErrorResponse) {
 
 	var entity userEntity.Users
 	find := r.db.Where("id = ?", input.ID).First(&entity)
 	if find.Error != nil {
 		if errors.Is(find.Error, gorm.ErrRecordNotFound) {
-			return nil, dto.ResponseError{Error: find.Error, Code: 401}
+			return nil, dto.ErrorResponse{Error: find.Error, Code: 401}
 		}
-		return nil, dto.ResponseError{Error: find.Error, Code: 500}
+		return nil, dto.ErrorResponse{Error: find.Error, Code: 500}
 	}
 
 	entity.Name = input.Name
@@ -164,13 +164,13 @@ func (r *UserRepository) Update(input userEntity.Users) (*userEntity.Users, dto.
 
 	update := r.db.Save(&entity)
 	if update.Error != nil {
-		return nil, dto.ResponseError{Error: update.Error, Code: 500}
+		return nil, dto.ErrorResponse{Error: update.Error, Code: 500}
 	}
 
-	return &entity, dto.ResponseError{}
+	return &entity, dto.ErrorResponse{}
 }
 
-func (r *UserRepository) ChangePassword(userId uint64, newPassword string) dto.ResponseError {
+func (r *UserRepository) ChangePassword(userId uint64, newPassword string) dto.ErrorResponse {
 
 	entity := userEntity.Users{
 		ID:       userId,
@@ -179,8 +179,8 @@ func (r *UserRepository) ChangePassword(userId uint64, newPassword string) dto.R
 
 	Update := r.db.Updates(&entity)
 	if Update.Error != nil {
-		return dto.ResponseError{Error: Update.Error, Code: 500}
+		return dto.ErrorResponse{Error: Update.Error, Code: 500}
 	}
 
-	return dto.ResponseError{}
+	return dto.ErrorResponse{}
 }

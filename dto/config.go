@@ -6,6 +6,7 @@ type ConfigEnvironment struct {
 	App      ConfigApp
 }
 type ConfigApp struct {
+	ServiceName string
 	Timezone    string
 	Version     string
 	RestPort    string

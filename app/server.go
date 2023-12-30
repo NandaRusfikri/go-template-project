@@ -1,4 +1,4 @@
-package server
+package app
 
 import (
 	"fmt"
@@ -53,7 +53,7 @@ func Start() {
 	authcontroller.InitAuthControllerHTTP(httpServer, authUseCase)
 	usercontroller.InitUserControllerHTTP(httpServer, userUseCase)
 	productcontroller.InitProductControllerHTTP(httpServer, productUseCase)
-	defaultcontroller.InitDefaultController(httpServer)
+	defaultcontroller.InitDefaultController(httpServer, config.App)
 
 	err = httpServer.Run(fmt.Sprintf(`:%v`, restPort))
 	if err != nil {

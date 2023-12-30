@@ -28,11 +28,11 @@ func TestResetPassword(t *testing.T) {
 		Email:       "test@example.com",
 	}
 
-	authRepository.Mock.On("ResetPassword", testInput).Return(dto.ResponseError{})
+	authRepository.Mock.On("ResetPassword", testInput).Return(dto.ErrorResponse{})
 
 	actualError := authUsecase.ResetPassword(testInput)
 
 	authRepository.Mock.AssertExpectations(t)
-	assert.Equal(t, dto.ResponseError{}, actualError)
+	assert.Equal(t, dto.ErrorResponse{}, actualError)
 
 }

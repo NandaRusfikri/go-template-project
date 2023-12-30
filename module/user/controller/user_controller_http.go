@@ -42,15 +42,21 @@ func (c *UserControllerHTTP) ChangePassword(ctx *gin.Context) {
 	var input dto.ChangePassword
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {
-		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{
+			Message: "request invalid " + err.Error(),
+			Code:    http.StatusBadRequest,
+		})
 		return
 	}
-	err := c.userUsecase.ChangePassword(input)
+	res := c.userUsecase.ChangePassword(input)
 
-	if err.Error != nil {
-		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
+	if res.Error != nil {
+		util.APIResponse(ctx, dto.APIResponse{Message: res.Error.Error(), Code: res.Code})
 	} else {
-		util.APIResponse(ctx, "Change Password Success", http.StatusOK, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{
+			Message: "Change Password Success",
+			Code:    http.StatusOK,
+		})
 	}
 }
 
@@ -71,15 +77,23 @@ func (c *UserControllerHTTP) UserList(ctx *gin.Context) {
 	var input dto.UsersRequest
 
 	if err := ctx.ShouldBindQuery(&input); err != nil {
-		util.APIResponse(ctx, "Request Invalid", 400, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{
+			Message: "request invalid " + err.Error(),
+			Code:    http.StatusBadRequest,
+		})
 		return
 	}
 	res, count, err := c.userUsecase.GetList(input)
 
 	if err.Error != nil {
-		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{Message: err.Error.Error(), Code: err.Code})
 	} else {
-		util.APIResponse(ctx, "Get Users Success", http.StatusOK, count, res)
+		util.APIResponse(ctx, dto.APIResponse{
+			Message: "Get Users Success",
+			Code:    http.StatusOK,
+			Count:   count,
+			Data:    res,
+		})
 	}
 }
 
@@ -100,15 +114,18 @@ func (c *UserControllerHTTP) UserInsert(ctx *gin.Context) {
 	var input dto.UserInsert
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {
-		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{
+			Message: "request invalid " + err.Error(),
+			Code:    http.StatusBadRequest,
+		})
 		return
 	}
 	err := c.userUsecase.Insert(input)
 
 	if err.Error != nil {
-		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{Message: err.Error.Error(), Code: err.Code})
 	} else {
-		util.APIResponse(ctx, "User Insert Success", http.StatusOK, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{Message: "User Insert Success", Code: http.StatusOK})
 	}
 
 }
@@ -130,14 +147,17 @@ func (c *UserControllerHTTP) UserUpdate(ctx *gin.Context) {
 	var input dto.UserUpdate
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {
-		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{
+			Message: "request invalid " + err.Error(),
+			Code:    http.StatusBadRequest,
+		})
 		return
 	}
 	res, err := c.userUsecase.Update(input)
 
 	if err.Error != nil {
-		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{Message: err.Error.Error(), Code: err.Code})
 	} else {
-		util.APIResponse(ctx, "User Update Success", http.StatusOK, 0, res)
+		util.APIResponse(ctx, dto.APIResponse{Message: "User Update Success", Code: http.StatusOK, Data: res})
 	}
 }

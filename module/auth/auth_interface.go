@@ -6,12 +6,12 @@ import (
 )
 
 type RepositoryInterface interface {
-	ForgotPassword(userId uint64, token string) (*authEntity.ForgotPassword, dto.ResponseError)
-	ResetPassword(input dto.ResetPassword) dto.ResponseError
+	ForgotPassword(userId uint64, token string) (*authEntity.ForgotPassword, dto.ErrorResponse)
+	ResetPassword(input dto.ResetPassword) dto.ErrorResponse
 }
 
 type UseCaseInterface interface {
-	ForgotPassword(input dto.ForgotPassword) dto.ResponseError
-	ResetPassword(input dto.ResetPassword) dto.ResponseError
-	Login(input dto.LoginRequest) (*dto.LoginResponse, dto.ResponseError)
+	ForgotPassword(input dto.ForgotPassword) dto.ErrorResponse
+	ResetPassword(input dto.ResetPassword) dto.ErrorResponse
+	Login(input dto.LoginRequest) (*dto.LoginResponse, dto.ErrorResponse)
 }

@@ -1,28 +1,37 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go-template-project/constant"
+	"go-template-project/dto"
 	"go-template-project/util"
-	"net/http"
 	"time"
 )
 
-type DefaultController struct{}
+type DefaultController struct {
+	config dto.ConfigApp
+}
 
-func InitDefaultController(g *gin.Engine) {
-	handler := &DefaultController{}
+func InitDefaultController(g *gin.Engine, config dto.ConfigApp) {
+	handler := &DefaultController{
+		config: config,
+	}
 
 	g.GET("/", handler.MainPage)
 }
 
-func (h *DefaultController) MainPage(c *gin.Context) {
+func (c *DefaultController) MainPage(ctx *gin.Context) {
 	jsonData := map[string]interface{}{
-		"application_name": constant.SERVICE_NAME,
-		"author":           constant.AUTHOR,
-		"version":          constant.SERVICE_VERSION,
-		"time_server":      time.Now(),
-		"swagger":          "http://localhost:54321/swagger/index.html",
+		"service_name": c.config.ServiceName,
+		"author":       constant.AUTHOR,
+		"version":      constant.SERVICE_VERSION,
+		"time_now":     time.Now(),
+		"swagger":      fmt.Sprintf("http://%v/swagger/index.html", c.config.SwaggerHost),
 	}
-	util.APIResponse(c, "success", http.StatusOK, 0, jsonData)
+	util.APIResponse(ctx, dto.APIResponse{
+		Code:    200,
+		Message: "success",
+		Data:    jsonData,
+	})
 }

@@ -24,23 +24,23 @@ func InitAuthUseCase(authRepo auth.RepositoryInterface, userRepo user.Repository
 	return &AuthUseCase{authRepo: authRepo, userRepo: userRepo, SMTP: smtp}
 }
 
-func (u *AuthUseCase) ResetPassword(input dto.ResetPassword) dto.ResponseError {
+func (u *AuthUseCase) ResetPassword(input dto.ResetPassword) dto.ErrorResponse {
 
 	err := u.authRepo.ResetPassword(input)
 	return err
 }
 
-func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.ResponseError) {
+func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.ErrorResponse) {
 
 	entityUser, err := u.userRepo.FindByEmail(input.Email)
 
 	checkPassword := pkg.ComparePassword(entityUser.Password, input.Password)
 	if checkPassword != nil {
-		return nil, dto.ResponseError{Error: errors.New("password invalid"), Code: 401}
+		return nil, dto.ErrorResponse{Error: errors.New("password invalid"), Code: 401}
 	}
 
 	if entityUser.IsActive != nil && !*entityUser.IsActive {
-		return nil, dto.ResponseError{Error: fmt.Errorf("entityUser not active"), Code: 401}
+		return nil, dto.ErrorResponse{Error: fmt.Errorf("entityUser not active"), Code: 401}
 	}
 
 	expiredAt := time.Now().Add(time.Hour * time.Duration(constant.DURATION_TOKEN))
@@ -57,7 +57,7 @@ func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.Res
 
 	token, errJWT := pkg.Sign(claims, jwtSecretKey)
 	if errJWT != nil {
-		return nil, dto.ResponseError{Code: 500}
+		return nil, dto.ErrorResponse{Code: 500}
 	}
 
 	res := dto.LoginResponse{
@@ -72,14 +72,14 @@ func (u *AuthUseCase) Login(input dto.LoginRequest) (*dto.LoginResponse, dto.Res
 	return &res, err
 }
 
-func (u *AuthUseCase) ForgotPassword(input dto.ForgotPassword) dto.ResponseError {
+func (u *AuthUseCase) ForgotPassword(input dto.ForgotPassword) dto.ErrorResponse {
 
 	checkEmail, _ := u.userRepo.FindByEmail(input.Email)
 	if checkEmail == nil {
-		return dto.ResponseError{Error: fmt.Errorf("email not found"), Code: 400}
+		return dto.ErrorResponse{Error: fmt.Errorf("email not found"), Code: 400}
 	}
 	res, err := u.authRepo.ForgotPassword(checkEmail.ID, util.RandomInt(6))
-	if err != (dto.ResponseError{}) {
+	if err != (dto.ErrorResponse{}) {
 		return err
 	}
 
@@ -95,10 +95,10 @@ func (u *AuthUseCase) ForgotPassword(input dto.ForgotPassword) dto.ResponseError
 		Attachment: []string{},
 	})
 	if SendEmail != nil {
-		return dto.ResponseError{
+		return dto.ErrorResponse{
 			Error: fmt.Errorf("failed send email"),
 			Code:  500,
 		}
 	}
-	return dto.ResponseError{}
+	return dto.ErrorResponse{}
 }

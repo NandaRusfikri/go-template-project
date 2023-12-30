@@ -42,20 +42,23 @@ func MapStruct(source interface{}, dest interface{}) {
 	}
 }
 
-func APIResponse(ctx *gin.Context, Message string, StatusCode int, Count int64, Data interface{}) {
+func APIResponse(ctx *gin.Context, options ...dto.APIResponse) {
 
-	jsonResponse := dto.ResponseSuccess{
-		Code: StatusCode,
-		//Method:  Method,
-		Count:   Count,
-		Message: Message,
-		Data:    Data,
-		//Items:   Items,
+	var opt dto.APIResponse
+	if len(options) > 0 {
+		opt = options[0]
 	}
 
-	if StatusCode >= 400 {
-		ctx.AbortWithStatusJSON(StatusCode, jsonResponse)
+	jsonResponse := dto.APIResponse{
+		Message: opt.Message,
+		Code:    opt.Code,
+		Count:   opt.Count,
+		Data:    opt.Data,
+	}
+
+	if jsonResponse.Code >= 400 {
+		ctx.AbortWithStatusJSON(jsonResponse.Code, jsonResponse)
 	} else {
-		ctx.JSON(StatusCode, jsonResponse)
+		ctx.JSON(jsonResponse.Code, jsonResponse)
 	}
 }

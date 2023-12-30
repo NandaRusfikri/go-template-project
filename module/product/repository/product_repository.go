@@ -22,23 +22,23 @@ func InitProductRepository(dbCon *gorm.DB) product.RepositoryInterface {
 	}
 }
 
-func (r *ProductRepository) GetIds(ids []uint64) ([]uint64, dto.ResponseError) {
+func (r *ProductRepository) GetIds(ids []uint64) ([]uint64, dto.ErrorResponse) {
 
 	var ArrayId []uint64
 	Check := r.db.Model(&entity.Products{}).Select("id").Where("id IN ?", ids).Find(&ArrayId)
 
 	if Check.Error != nil {
 		if errors.Is(Check.Error, gorm.ErrRecordNotFound) {
-			return nil, dto.ResponseError{Error: Check.Error, Code: 404}
+			return nil, dto.ErrorResponse{Error: Check.Error, Code: 404}
 		}
-		return nil, dto.ResponseError{Error: Check.Error, Code: 500}
+		return nil, dto.ErrorResponse{Error: Check.Error, Code: 500}
 	}
 
-	return ArrayId, dto.ResponseError{}
+	return ArrayId, dto.ErrorResponse{}
 
 }
 
-func (r *ProductRepository) GetList(input dto.ProductsRequest) ([]*entity.Products, int64, dto.ResponseError) {
+func (r *ProductRepository) GetList(input dto.ProductsRequest) ([]*entity.Products, int64, dto.ErrorResponse) {
 
 	var ListItem []*entity.Products
 
@@ -53,11 +53,11 @@ func (r *ProductRepository) GetList(input dto.ProductsRequest) ([]*entity.Produc
 
 	dbCount := db.Model(entity.Products{}).Count(&count)
 	if dbCount.Error != nil && !errors.Is(dbCount.Error, gorm.ErrRecordNotFound) {
-		return nil, 0, dto.ResponseError{Error: dbCount.Error, Code: 500}
+		return nil, 0, dto.ErrorResponse{Error: dbCount.Error, Code: 500}
 	}
 
 	if count < 1 {
-		return nil, 0, dto.ResponseError{}
+		return nil, 0, dto.ErrorResponse{}
 	}
 
 	orderByQuery := ""
@@ -84,25 +84,25 @@ func (r *ProductRepository) GetList(input dto.ProductsRequest) ([]*entity.Produc
 	Find := db.Find(&ListItem)
 	if Find.Error != nil {
 		if errors.Is(Find.Error, gorm.ErrRecordNotFound) {
-			return nil, 0, dto.ResponseError{Error: Find.Error, Code: 401}
+			return nil, 0, dto.ErrorResponse{Error: Find.Error, Code: 401}
 		}
-		return nil, 0, dto.ResponseError{Error: Find.Error, Code: 500}
+		return nil, 0, dto.ErrorResponse{Error: Find.Error, Code: 500}
 	}
 
-	return ListItem, count, dto.ResponseError{}
+	return ListItem, count, dto.ErrorResponse{}
 
 }
 
-func (r *ProductRepository) ProductInsert(input entity.Products) dto.ResponseError {
+func (r *ProductRepository) ProductInsert(input entity.Products) dto.ErrorResponse {
 
 	Create := r.db.Create(&input)
 	if Create.Error != nil {
-		return dto.ResponseError{Error: Create.Error, Code: 500}
+		return dto.ErrorResponse{Error: Create.Error, Code: 500}
 	}
 	if Create.RowsAffected < 1 {
-		return dto.ResponseError{Error: fmt.Errorf("error Insert"), Code: 500}
+		return dto.ErrorResponse{Error: fmt.Errorf("error Insert"), Code: 500}
 	}
 
-	return dto.ResponseError{}
+	return dto.ErrorResponse{}
 
 }

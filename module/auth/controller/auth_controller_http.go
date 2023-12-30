@@ -40,15 +40,18 @@ func (c *AuthControllerHTTP) ResetPassword(ctx *gin.Context) {
 	var input dto.ResetPassword
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {
-		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{
+			Message: "request invalid " + err.Error(),
+			Code:    http.StatusBadRequest,
+		})
 		return
 	}
 	err := c.authUsecase.ResetPassword(input)
 
 	if err.Error != nil {
-		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{Message: err.Error.Error(), Code: err.Code})
 	} else {
-		util.APIResponse(ctx, "Reset Password Success", http.StatusOK, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{Message: "Reset Password Success", Code: http.StatusOK})
 	}
 }
 
@@ -69,15 +72,18 @@ func (c *AuthControllerHTTP) ForgotPassword(ctx *gin.Context) {
 	var input dto.ForgotPassword
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {
-		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{
+			Message: "request invalid " + err.Error(),
+			Code:    http.StatusBadRequest,
+		})
 		return
 	}
 	err := c.authUsecase.ForgotPassword(input)
 
 	if err.Error != nil {
-		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{Message: err.Error.Error(), Code: err.Code})
 	} else {
-		util.APIResponse(ctx, "Request Forgot Password Success", http.StatusOK, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{Message: "Request Forgot Password Success", Code: http.StatusOK})
 	}
 }
 
@@ -98,14 +104,17 @@ func (c *AuthControllerHTTP) Login(ctx *gin.Context) {
 	var input dto.LoginRequest
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {
-		util.APIResponse(ctx, "Request Invalid "+err.Error(), 400, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{
+			Message: "request invalid " + err.Error(),
+			Code:    http.StatusBadRequest,
+		})
 		return
 	}
 	res, err := c.authUsecase.Login(input)
 
 	if err.Error != nil {
-		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{Message: err.Error.Error(), Code: err.Code})
 	} else {
-		util.APIResponse(ctx, "Login Success", http.StatusOK, 0, res)
+		util.APIResponse(ctx, dto.APIResponse{Message: "Login Success", Code: http.StatusOK, Data: res})
 	}
 }

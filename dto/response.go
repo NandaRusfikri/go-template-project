@@ -1,13 +1,13 @@
 package dto
 
-type ResponseSuccess struct {
-	Code    int         `json:"code"`
-	Message string      `json:"message"`
-	Count   int64       `json:"count,omitempty"`
-	Data    interface{} `json:"data"`
-}
-
-type ResponseError struct {
+type ErrorResponse struct {
 	Code  int
 	Error error
+}
+
+type APIResponse struct {
+	Message string      `json:"message"`
+	Code    int         `json:"code"`
+	Count   int64       `json:"count,omitempty"`
+	Data    interface{} `json:"data"`
 }

@@ -18,15 +18,15 @@ func InitUserUseCase(repository user.RepositoryInterface) *UserUseCase {
 	return &UserUseCase{userRepo: repository}
 }
 
-func (u *UserUseCase) GetList(input dto.UsersRequest) ([]*dto.UsersResponse, int64, dto.ResponseError) {
+func (u *UserUseCase) GetList(input dto.UsersRequest) ([]*dto.UsersResponse, int64, dto.ErrorResponse) {
 	return u.userRepo.GetList(input)
 }
 
-func (u *UserUseCase) Insert(input dto.UserInsert) dto.ResponseError {
+func (u *UserUseCase) Insert(input dto.UserInsert) dto.ErrorResponse {
 
 	GetByEmail, _ := u.userRepo.FindByEmail(input.Email)
 	if GetByEmail != nil {
-		return dto.ResponseError{Error: fmt.Errorf("email already exist"), Code: 400}
+		return dto.ErrorResponse{Error: fmt.Errorf("email already exist"), Code: 400}
 	}
 
 	EntityUser := userEntity.Users{
@@ -41,7 +41,7 @@ func (u *UserUseCase) Insert(input dto.UserInsert) dto.ResponseError {
 
 }
 
-func (u *UserUseCase) Update(input dto.UserUpdate) (*userEntity.Users, dto.ResponseError) {
+func (u *UserUseCase) Update(input dto.UserUpdate) (*userEntity.Users, dto.ErrorResponse) {
 
 	entity := userEntity.Users{
 		ID:    input.Id,
@@ -58,16 +58,16 @@ func (u *UserUseCase) Update(input dto.UserUpdate) (*userEntity.Users, dto.Respo
 	return res, err
 }
 
-func (u *UserUseCase) ChangePassword(input dto.ChangePassword) dto.ResponseError {
+func (u *UserUseCase) ChangePassword(input dto.ChangePassword) dto.ErrorResponse {
 
 	DataUser, err := u.userRepo.FindById(input.UserId)
 	if err.Error != nil {
-		return dto.ResponseError{Code: 404, Error: errors.New("user not found")}
+		return dto.ErrorResponse{Code: 404, Error: errors.New("user not found")}
 	}
 
 	CheckPassword := pkg.ComparePassword(DataUser.Password, input.OldPassword)
 	if CheckPassword != nil {
-		return dto.ResponseError{Error: CheckPassword, Code: 401}
+		return dto.ErrorResponse{Error: CheckPassword, Code: 401}
 	}
 
 	err = u.userRepo.ChangePassword(input.UserId, pkg.HashPassword(input.NewPassword))

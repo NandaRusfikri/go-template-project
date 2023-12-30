@@ -28,6 +28,7 @@ func LoadConfig(path string) (config dto.ConfigEnvironment) {
 		Password: os.Getenv("SMTP_PASSWORD"),
 	}
 	config.App = dto.ConfigApp{
+		ServiceName: os.Getenv("SERVICE_NAME"),
 		Timezone:    os.Getenv("TIMEZONE"),
 		Version:     os.Getenv("VERSION"),
 		RestPort:    os.Getenv("REST_PORT"),

@@ -1,10 +1,10 @@
 package main
 
 import (
-	"go-template-project/presentation/server"
+	"go-template-project/app"
 )
 
 func main() {
 
-	server.Start()
+	app.Start()
 }

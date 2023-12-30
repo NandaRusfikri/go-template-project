@@ -15,7 +15,7 @@ var userUsecase = InitUserUseCase(userRepository)
 type expectedGetList struct {
 	res   []*dto.UsersResponse
 	count int64
-	error dto.ResponseError
+	error dto.ErrorResponse
 }
 
 func TestGetList(t *testing.T) {
@@ -34,7 +34,7 @@ func TestGetList(t *testing.T) {
 					{Id: 2, Name: "rusfikri", Email: "rusfikri@gmail.com", IsActive: true},
 				},
 				count: 2,
-				error: dto.ResponseError{},
+				error: dto.ErrorResponse{},
 			},
 		},
 		{
@@ -43,7 +43,7 @@ func TestGetList(t *testing.T) {
 			expected: expectedGetList{
 				res:   []*dto.UsersResponse{},
 				count: 0,
-				error: dto.ResponseError{},
+				error: dto.ErrorResponse{},
 			},
 		},
 	}

@@ -38,14 +38,22 @@ func (c *ProductControllerHTTP) ProductList(ctx *gin.Context) {
 	var input dto.ProductsRequest
 
 	if err := ctx.ShouldBindQuery(&input); err != nil {
-		util.APIResponse(ctx, "request invalid", 400, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{
+			Message: "request invalid " + err.Error(),
+			Code:    http.StatusBadRequest,
+		})
 		return
 	}
 	res, count, err := c.productUsecase.GetList(input)
 
 	if err.Error != nil {
-		util.APIResponse(ctx, err.Error.Error(), err.Code, 0, nil)
+		util.APIResponse(ctx, dto.APIResponse{Message: err.Error.Error(), Code: err.Code})
 	} else {
-		util.APIResponse(ctx, "List Success", http.StatusOK, count, res)
+		util.APIResponse(ctx, dto.APIResponse{
+			Message: "List Success",
+			Code:    http.StatusOK,
+			Count:   count,
+			Data:    res,
+		})
 	}
 }
