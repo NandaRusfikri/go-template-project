@@ -7,13 +7,13 @@ import (
 	"go-template-project/dto"
 )
 
-func SetupGin(config dto.ConfigEnvironment) *gin.Engine {
+func InitHTTPGin(config dto.ConfigApp) *gin.Engine {
 
 	app := gin.Default()
 
-	if config.GoEnv == "production" {
+	if config.GoENV == "production" {
 		gin.SetMode(gin.ReleaseMode)
-	} else if config.GoEnv == "test" {
+	} else if config.GoENV == "test" {
 		gin.SetMode(gin.TestMode)
 	} else {
 		gin.SetMode(gin.DebugMode)

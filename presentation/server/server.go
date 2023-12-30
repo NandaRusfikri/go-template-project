@@ -4,7 +4,6 @@ import (
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"go-template-project/database"
-	"go-template-project/dto"
 	authcontroller "go-template-project/module/auth/controller"
 	authrepo "go-template-project/module/auth/repository"
 	authusecase "go-template-project/module/auth/usecase"
@@ -21,8 +20,8 @@ import (
 
 func Start() {
 
-	ConfEnv := pkg.LoadEnvironment(".env")
-	RESTPort, err := strconv.Atoi(ConfEnv.RestPort)
+	config := pkg.LoadConfig(".env")
+	restPort, err := strconv.Atoi(config.App.RestPort)
 	if err != nil {
 		log.Errorln("REST_PORT is not valid ", err.Error())
 	}
@@ -34,40 +33,29 @@ func Start() {
 	//	return
 	//}
 
-	SMTPPort, err := strconv.Atoi(ConfEnv.SmtpPort)
-	if err != nil {
-		log.Errorln("SMTP Port is not valid ", err.Error())
-	}
+	smtpClient := pkg.InitEmail(&config.SMTP)
 
-	smtpClient := pkg.InitEmail(&dto.SMTPConfig{
-		Host:     ConfEnv.SmtpHost,
-		Port:     SMTPPort,
-		Email:    ConfEnv.SmtpEmail,
-		Password: ConfEnv.SmtpPassword,
-		Name:     ConfEnv.SmtpName,
-	})
-
-	DBPostgres, err := database.SetupDBPostgres(ConfEnv)
+	dbPostgres, err := database.InitDBPostgres(config.Database, config.App.Timezone)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	httpServer := pkg.SetupGin(ConfEnv)
+	httpServer := pkg.InitHTTPGin(config.App)
 	pkg.InitSwagger(httpServer)
 
-	AuthRepo := authrepo.InitAuthRepository(DBPostgres)
-	UserRepo := userrepo.InitUserRepository(DBPostgres)
-	ProductRepo := productrepo.InitProductRepository(DBPostgres)
-	ItemUseCase := itemusecase.InitProductUseCase(ProductRepo)
-	AuthUseCase := authusecase.InitAuthUseCase(AuthRepo, UserRepo, smtpClient)
-	UserUseCase := userusecase.InitUserUseCase(UserRepo)
+	authRepo := authrepo.InitAuthRepository(dbPostgres)
+	userRepo := userrepo.InitUserRepository(dbPostgres)
+	productRepo := productrepo.InitProductRepository(dbPostgres)
+	productUseCase := itemusecase.InitProductUseCase(productRepo)
+	authUseCase := authusecase.InitAuthUseCase(authRepo, userRepo, smtpClient)
+	userUseCase := userusecase.InitUserUseCase(userRepo)
 
-	authcontroller.InitAuthControllerHTTP(httpServer, AuthUseCase)
-	usercontroller.InitUserControllerHTTP(httpServer, UserUseCase)
-	productcontroller.InitProductControllerHTTP(httpServer, ItemUseCase)
+	authcontroller.InitAuthControllerHTTP(httpServer, authUseCase)
+	usercontroller.InitUserControllerHTTP(httpServer, userUseCase)
+	productcontroller.InitProductControllerHTTP(httpServer, productUseCase)
 	defaultcontroller.InitDefaultController(httpServer)
 
-	err = httpServer.Run(fmt.Sprintf(`:%v`, RESTPort))
+	err = httpServer.Run(fmt.Sprintf(`:%v`, restPort))
 	if err != nil {
 		panic(err)
 	}
